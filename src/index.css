@@ -1,13 +1,225 @@
+@keyframes lights {
+  0% {
+    color: hsl(21, 90%, 48%);
+    text-shadow:
+      0 0 1em hsla(20, 80%, 56%, 0.2),
+      0 0 0.125em hsla(32, 98%, 83%, 0.3),
+      -1em -0.125em 0.5em hsla(12, 6%, 15%, 0),
+      1em 0.125em 0.5em hsla(200, 100%, 60%, 0);
+  }
+  
+  30% { 
+    color: hsl(21, 45%, 58%);
+    text-shadow:
+      0 0 1em hsla(20, 80%, 56%, 0.5),
+      0 0 0.125em hsla(32, 98%, 83%, 0.5),
+      -0.5em -0.125em 0.25em hsla(12, 6%, 15%, 0.2),
+      0.5em 0.125em 0.25em hsla(21, 45%, 58%, 0.4);
+  }
+  
+  40% { 
+    color: hsl(21, 100%, 63%);
+    text-shadow:
+      0 0 1em hsla(20, 80%, 56%, 0.5),
+      0 0 0.125em hsla(320, 100%, 90%, 0.5),
+      -0.25em -0.125em 0.125em hsla(12, 6%, 15%, 0.2),
+      0.25em 0.125em 0.125em hsla(21, 45%, 58%, 0.4);
+  }
+  
+  70% {
+    color: hsl(21, 45%, 58%);
+    text-shadow:
+      0 0 1em hsla(20, 80%, 56%, 0.5),
+      0 0 0.125em hsla(32, 98%, 83%, 0.5),
+      0.5em -0.125em 0.25em hsla(12, 6%, 15%, 0.2),
+      -0.5em 0.125em 0.25em hsla(21, 45%, 58%, 0.4);
+  }
+  
+  100% {
+    color: hsl(21, 90%, 48%);
+    text-shadow:
+      0 0 1em hsla(20, 80%, 56%, 0.2),
+      0 0 0.125em hsla(32, 98%, 83%, 0.3),
+      1em -0.125em 0.5em hsla(12, 6%, 15%, 0),
+      -1em 0.125em 0.5em hsla(200, 100%, 60%, 0);
+  }
+  
+}
+
 body {
+  background-color: #1C1917;
+  color: wheat;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.font-link {
+  font-family: 'IM Fell DW Pica', serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+}
+
+.logo {
+  width: 50vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  gap: 2vw;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo > img {
+  width: 7vw;
+}
+
+.logo > h1 {
+  color: #FED7AA;
+  font-family: 'Poppins', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 900;
+}
+
+main {
+  width: 50vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+nav {
+  margin: 2vw 1vw 0 0;
+  text-align: end;
+  line-height: 0;
+  align-self: end;
+}
+
+.nav-link {
+  color: #FED7AA;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+.login {
+  align-self: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2vw;
+}
+
+.input {
+  background-color: #1C1917;
+  width: 18vw;
+  padding: 0.8vw;
+  border: 0px;
+  border-bottom: 1px solid #57534E;
+  color: #E7E5E4;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.input:focus {
+  outline: none;
+  border-bottom: 1px solid #FED7AA;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+  -webkit-text-fill-color: #E7E5E4;
+  -webkit-box-shadow: 0 0 0 30px #1C1917 inset !important;
+}
+
+button {
+  width: 8vw;
+  background-color: #14B8A6;
+  padding: 0.8vw;
+  cursor: pointer;
+  border: 0;
+  border-radius: 0.5vw;
+  color: #E7E5E4;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+button:hover {
+  background-color: #FED7AA;
+  color: #EA580C;
+  transition-duration: 500ms;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.auth-links {
+  margin-top: 2vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5vw;
+}
+
+.auth-link {
+  color: #FED7AA;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+.motif {
+  margin: 0 1vw 1vw 0;
+  text-align: end;
+  line-height: 0.5vw;
+  align-self: end;
+}
+
+.motif > h4 {
+  color: #FED7AA;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.motif > h3 {
+  /* color: #EA580C; */
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  animation: lights 5s 750ms linear infinite;
 }
