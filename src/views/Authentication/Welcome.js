@@ -1,64 +1,24 @@
-import logo from '../../logo.svg';
-import useDocumentTitle from '../../components/useDocumentTitle';
-import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import logo from '../../components/images/logo.svg'
+import useDocumentTitle from '../../components/useDocumentTitle'
+import { Link } from 'react-router-dom'
 
-import Form from '../../components/registerForm'
+import Form from '../../components/loginForm'
 
-function Welcome() {
-
-    useDocumentTitle('joopyter');
-
-    // const [token, setToken] = useState("");
-    
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         email: "",
-    //         password: "",
-    //     };
-    // }
-
-    // useEffect(() => {
-    //     const url = "http://127.0.0.1:8000/api/v1/login";
-
-    //     const options = {
-    //         method: 'POST',
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify ({
-    //             email: email.value,
-    //             password: password.value
-    //         })
-    //     }
-
-    //     const fetchData = (async () => {
-    //         try {
-    //             const res = await fetch(url, options);
-    //             const json = await res.json();
-    //             setToken(json.slip.token);
-    //         }
-    //         catch (err) {
-    //             console.log("error", err);
-    //         }
-    //     })();
-    // }, []);
+export default function Welcome() {
+    useDocumentTitle('joopyter')
 
     return (
-        <div className="container">
-            <div className="logo">
-                <img src={ logo } className="logo-img" alt="logo" />
-
-                <h1 className="logo-name">joopyter</h1>
+        <div className='container'>
+            <div className='logo'>
+                <img src={ logo } className='logo-img' alt='logo' />
+                <h1 className='logo-name'>joopyter</h1>
             </div>
 
-            <main>
-                <nav>
+            <main className='main'>
+                <nav className='about'>
                     <ul>
                         <li>
-                            <Link to="/about" className="nav-link">what is joopyter?</Link>
+                            <Link to='/about' className='nav-link'>what is joopyter?</Link>
                         </li>
                     </ul>
                 </nav>
@@ -68,24 +28,22 @@ function Welcome() {
                     <Form />
                     
                     <div>
-                        <ul className="auth-links">
+                        <ul className='auth-links'>
                             <li>
-                                <Link to="/forgot-password" className="auth-link">forgot your password?</Link>
+                                <Link to='/forgot-password' className='auth-link'>forgot your password?</Link>
                             </li>
                             <li>
-                                <Link to="/register" className="auth-link">new here? create an account</Link>
+                                <Link to='/register' className='auth-link'>new here? create an account</Link>
                             </li>
                         </ul>
                     </div>
                 </div>
 
-                <div className="motif">
+                <div className='motif'>
                     <h4>a space for storytellers to be true to their soul.</h4>
                     <h3>share your art.</h3>
                 </div>
             </main>
         </div>
-    );
+    )
 }
-  
-export default Welcome;

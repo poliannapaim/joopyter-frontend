@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export default function Form(props) {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+export default function Form() {
+    const [email, setEmail] = useState(null)
+    const [password, setPassword] = useState(null)
     const navigate = useNavigate()
 
     const handleLogin = (e) => {
         e.preventDefault()
 
-        const url = 'http://127.0.0.1:8000/api/v1/login'
+        const url = 'http://127.0.0.1:8000/api/v2/login'
         const user = JSON.stringify({
             email,
             password
@@ -28,30 +28,28 @@ export default function Form(props) {
             try {
                 const res = await fetch(url, options)
                 const json = await res.json()
+
                 if (!res.ok) {
-                    return alert('Falha na requisição.')
+                    return alert('Falha ao autenticar email e senha.', res)
                 }
                 const token = json['token']
                 localStorage.setItem('auth_token', token)
-                console.log('redirecionando', token)
                 navigate('/dashboard')
             }
             catch (err) {
-                console.error("error", err)
+                console.error('error', err)
             }
         }
         makeRequest()
     }
 
   return (
-    <form className="form" onSubmit={ handleLogin }>
-        <input className="input" type="email" placeholder="email" name="email" value={ email } onChange={ (e) => setEmail(e.target.value) }/>
-        
-        <input className="input" type="password" placeholder="password" name="password" value={ password } onChange={ (e) => setPassword(e.target.value) }/>
+    <form className='form' onSubmit={handleLogin}>
+        <input className='input' type='email' placeholder='email' name='email' value={email || ''} onChange={(e) => setEmail(e.target.value)}/>
+        <input className='input' type='password' placeholder='password' name='password' value={password || ''} onChange={(e) => setPassword(e.target.value)}/>
 
-        <button type="submit">
-            login
-        </button>
+        <button className='button' type='submit'>login</button>
     </form>
-  );
+  )
 }
+ 

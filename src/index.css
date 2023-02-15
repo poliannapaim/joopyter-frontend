@@ -94,7 +94,7 @@ code {
   font-weight: 900;
 }
 
-main {
+.main {
   width: 50vw;
   height: 100vh;
   display: flex;
@@ -102,7 +102,7 @@ main {
   justify-content: space-between;
 }
 
-nav {
+.about {
   margin: 2vw 1vw 0 0;
   text-align: end;
   line-height: 0;
@@ -157,7 +157,7 @@ input:-webkit-autofill:active{
   -webkit-box-shadow: 0 0 0 30px #1C1917 inset !important;
 }
 
-button {
+.button {
   width: 8vw;
   background-color: #14B8A6;
   padding: 0.8vw;
@@ -170,7 +170,7 @@ button {
   font-weight: 700;
 }
 
-button:hover {
+.button:hover {
   background-color: #FED7AA;
   color: #EA580C;
   transition-duration: 500ms;
@@ -202,6 +202,20 @@ ul {
   text-decoration: underline;
 }
 
+.button-logout {
+  background-color: transparent;
+  color: #DC2626;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
+}
+
+.button-logout:hover {
+  text-decoration: underline;
+}
+
 .motif {
   margin: 0 1vw 1vw 0;
   text-align: end;
@@ -222,4 +236,9 @@ ul {
   font-size: 2rem;
   font-weight: 900;
   animation: lights 5s 750ms linear infinite;
+}
+
+.wrapper{
+  display: inline-block;
+  position: relative;
 }
