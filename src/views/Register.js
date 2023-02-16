@@ -1,4 +1,4 @@
-import useDocumentTitle from '../../components/useDocumentTitle'
+import useDocumentTitle from '../components/useDocumentTitle'
 
 function Register() {
 

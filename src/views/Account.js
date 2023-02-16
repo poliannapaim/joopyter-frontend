@@ -1,10 +1,10 @@
-import useDocumentTitle from '../../components/useDocumentTitle'
-import NavBar from '../../components/navBar'
+import useDocumentTitle from '../components/useDocumentTitle'
+import NavBar from '../components/navBar'
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
-import profile from '../../components/images/profile.svg'
+import profile from '../components/images/profile.svg'
 import InputMask from 'react-input-mask'
-import ShapeBottom from '../../components/shapeBottom'
+import ShapeBottom from '../components/shapeBottom'
 
 const Main = styled.main`
     width: 100vw;
@@ -23,7 +23,7 @@ const Data = styled.div`
     gap: 3vw;
 `;
 
-const Title = styled.h3`
+const H3 = styled.h3`
     color: #FED7AA;
     font-family: 'Poppins', sans-serif;
     font-size: 2.5rem;
@@ -150,7 +150,7 @@ export default function Account() {
             setUser(null)
             return
         }
-        const makeRequest = async () => {
+        const reqUser = async () => {
             const res = await fetch('http://127.0.0.1:8000/api/v2/user', {
                 headers: {
                     Accept: 'application/json',
@@ -163,14 +163,14 @@ export default function Account() {
             }
             setUser(json)
         }
-        makeRequest()
+        reqUser()
     }, [token])
 
     if (!user) {
         return <h1>Por favor, faça o login para acessar a conta.</h1>
     }
-    const input = user.dob
-    const [year, month, day] =  input.split('-')
+
+    const [year, month, day] =  user.dob.split('-')
     const dob = `${day}/${month}/${year}`
 
     function HandleProfilePic(e) {
@@ -189,7 +189,6 @@ export default function Account() {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`
-            
                 },
                 body: profilePic
             }
@@ -251,10 +250,10 @@ export default function Account() {
     
     return (
         <Main>
-            <NavBar />
+            <NavBar/>
 
             <Container>
-                <Title>account</Title>
+                <H3>account</H3>
                 <Data>
                     <FormProfilePic>
                         <ProfilePic
@@ -262,8 +261,7 @@ export default function Account() {
                                 (`http://127.0.0.1:8000/storage/${newProfilePic}`) :
                                 ((`http://127.0.0.1:8000/storage/${user.profile_pic}` ?
                                 (`http://127.0.0.1:8000/storage/${user.profile_pic}`) :
-                                profile))}>
-                        </ProfilePic>
+                                profile))}/>
                         <InputFile type='file' name='profilePic' id='file' accept='.jpeg, .png, .jpg' onChange={(e) => HandleProfilePic(e)}/>
                     </FormProfilePic>
                     <FormAccountUpdate onSubmit={handleAccountUpdate}>
@@ -272,30 +270,26 @@ export default function Account() {
                             name='name'
                             placeholder={user.name}
                             value={newName || user.name}
-                            onChange={(e) => setNewName(e.target.value)}>
-                        </Input>
+                            onChange={(e) => setNewName(e.target.value)}/>
                         <Input
                             type='email'
                             name='email'
                             placeholder={user.email}
                             value={newEmail || user.email}
-                            onChange={(e) => setNewEmail(e.target.value)}>
-                        </Input>
+                            onChange={(e) => setNewEmail(e.target.value)}/>
                         <InputDob
                             type='dob'
                             name='dob'
                             mask='99/99/9999'
                             placeholder={dob}
                             value={newDob || dob}
-                            onChange={(e) => setNewDob(e.target.value)}>
-                        </InputDob>
+                            onChange={(e) => setNewDob(e.target.value)}/>
                         <InputBio
                             type='bio'
                             name='bio'
                             placeholder={user.bio ? user.bio : 'bio'}
                             value={newBio || user.bio}
-                            onChange={(e) => setNewBio(e.target.value)}>
-                        </InputBio>
+                            onChange={(e) => setNewBio(e.target.value)}/>
                         <Button type='submit'>save</Button>
                     </FormAccountUpdate>
                 </Data>

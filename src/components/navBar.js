@@ -86,7 +86,7 @@ const Divider = styled.hr`
 
 const DropDownLinks = styled.ul`
     position: absolute;
-    width: 8vw;
+    width: 10vw;
     margin-top: 3vw;
     margin-right: -5px;
     padding: 1vw;
@@ -151,15 +151,16 @@ export default function NavBar() {
                     <DropDownImg src={user.profile_pic ? (
                         `http://127.0.0.1:8000/storage/${user.profile_pic}`
                         ) : (profile)}
-                        active={isOpen}>
-                    </DropDownImg>
+                        active={isOpen}/>
                 </DropDownButton>
 
                 {isOpen && (
                     <DropDownLinks>
                         <DropDownName>{user.name.split(" ")[0]}</DropDownName>
                         <Divider/>
-                        <Link to='/account' className='auth-link'>account</Link>               <button type='button' className='button-logout' onClick={handleLogout}>logout</button>
+                        <Link to='/account' className='auth-link'>edit account</Link>   
+                        <Link to='/upload-album' className='auth-link'>upload album</Link>
+                        <button type='button' className='button-logout' onClick={handleLogout}>logout</button>
                     </DropDownLinks>
                 )}
             </DropDown>
