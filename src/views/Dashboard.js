@@ -2,10 +2,10 @@ import useDocumentTitle from '../components/useDocumentTitle'
 import NavBar from '../components/navBar'
 import styled from 'styled-components'
 import GetAlbums from '../components/getAlbums'
-import ShapeBottom from '../components/shapeBottom'
+import ShapeBottomAbsolute from '../components/shapeBottomAbsolute'
 
 const Main = styled.main`
-    width: 100vw;
+    width: 100%;
     display: flex;
     flex-direction: column;
 `;
@@ -23,9 +23,8 @@ export default function Dashboard() {
             <NavBar/>
             <Container>
                 <GetAlbums/>
-
             </Container>
-            <ShapeBottom/>
+            <ShapeBottomAbsolute/>
         </Main>
     )
 }

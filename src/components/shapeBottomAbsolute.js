@@ -1,14 +1,13 @@
 import styled from 'styled-components'
 
 const Shape = styled.div`
-    position: relative;
+    position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     overflow: hidden;
     line-height: 0;
     transform: rotate(180deg);
-    margin-top: 5vw;
 
     & svg {
         position: relative;
@@ -21,7 +20,7 @@ const Shape = styled.div`
     }
 `;
 
-export default function ShapeBottom() {
+export default function ShapeBottomAbsolute() {
     return (
         <Shape>
             <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">

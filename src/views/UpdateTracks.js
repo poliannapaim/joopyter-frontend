@@ -5,7 +5,7 @@ import ShapeBottom from '../components/shapeBottom'
 import { useEffect, useState } from 'react'
 
 const Main = styled.main`
-    width: 100vw;
+    width: 100%;
     display: flex;
     flex-direction: column;
 `;
@@ -20,18 +20,26 @@ const H3 = styled.h3`
     font-family: 'Poppins', sans-serif;
     font-size: 2.5rem;
     font-weight: 900;
+    margin-bottom: 4vw;
+`;
+
+const AlbumInfo = styled.p`
+    color: #FED7AA;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 0;
+    width: fit-content;
+    text-transform: uppercase;
+    margin-left: 3vw;
 `;
 
 const Data = styled.div`
     display: flex;
     flex-direction: row;
     gap: 3vw;
-`;
-
-const CoverPic = styled.img`
-    width: 8vw;
-    height: 8vw;
-    border-radius: 8%;
+    margin-left: 3vw;
 `;
 
 const FormTracksUpdate = styled.form`
@@ -41,6 +49,12 @@ const FormTracksUpdate = styled.form`
     align-items: center;
     gap: 2vw;
 `;
+
+const Tracks = styled.div`
+    display: flex;
+    flex-direction: row;
+    gap: 2vw;
+`
 
 const InputNumber = styled.input`
     background-color: #1C1917;
@@ -57,10 +71,10 @@ const InputNumber = styled.input`
         outline: none;
         border-bottom: 1px solid #FED7AA;
     }
+
 `;
 const Input = styled(InputNumber)`
     width: 18vw;
-    margin-left: 2vw;
 `;
 
 const Button = styled.button`
@@ -82,15 +96,28 @@ const Button = styled.button`
     }
 `;
 
+const ButtonBack = styled(Button)`
+    margin-right: 2vw;
+    background-color: #FED7AA;
+    color: #EA580C;
+    vertical-align: top;
+
+    &:hover {
+    background-color: #EA580C;
+    color: #FED7AA;
+    transition-duration: 500ms;
+    }
+`;
+
 export default function UpdateTracks() {
     useDocumentTitle('edit your tracks')
 
     const id = (window.location).href.split('/').pop()
     const [token] = useState(localStorage.getItem('auth_token'))
     const [tracks, setTracks] = useState(null)
-    const [coverPic, setCoverPic] = useState(null)
-    const [newNumber, setNewNumber] = useState('')
-    const [newTitle, setNewTitle] = useState('')
+    const [albumInfo, setAlbumInfo] = useState(null)
+    const [newNumber, setNewNumber] = useState([])
+    const [newTitle, setNewTitle] = useState([])
 
     useEffect(() => {
         const reqAlbum = async () => {
@@ -105,7 +132,7 @@ export default function UpdateTracks() {
                 return alert('Falha ao buscar o album.')
             }
             setTracks(json.data.tracks)
-            setCoverPic(json.data.album.cover_pic)
+            setAlbumInfo(json.data.album.title)
         }
         reqAlbum()
     }, [token, id])
@@ -114,25 +141,49 @@ export default function UpdateTracks() {
         return <H3>Por favor, faça o login para acessar as tracks do álbum.</H3>
     }
 
-    const listTracks = tracks.map(tr => 
-        <div>
+    // console.log(tracks)
+    const updateNumberChange = id => (e) => {
+        let numberArr = []
+        numberArr[id] = e.target.value
+        console.log(id)
+        console.log(e.target.value)
+        setNewNumber(numberArr)
+    }
+
+    const updateTitleChange = id => (e) => {
+        let titleArr = []
+        titleArr[id] = e.target.value
+        console.log(id)
+        console.log(e.target.value)
+        setNewTitle(titleArr)
+    }
+
+    const listNumbers = tracks.map((tr)=> 
+        <div key={tr.id}>
             <InputNumber
-                type='number'
-                name='number[]'
-                placeholder={tr.number}
-                value={newNumber || tr.number}
-                onChange={(e) => setNewNumber(e.target.value)}/>
-            <Input
-                type='text'
-                name='text[]'
-                placeholder={tr.title}
-                value={newTitle || tr.title}
-                onChange={(e) => setNewTitle(e.target.value)}/>
+            type='number'
+            name='number'
+            placeholder={tr.number}
+            value={newNumber[tr.id] || tr.number}
+            onChange={updateNumberChange(tr.id)}/>
         </div>
     )
+    const listTitles = tracks.map((tr) => 
+        <div key={tr.id}>
+            <Input
+            type='text'
+            name='title'
+            placeholder={tr.title}
+            value={newTitle[tr.id] || tr.title}
+            onChange={updateTitleChange(tr.id)}/>
+        </div>
 
-    // const handleTracksUpdate = (e) => {
-    //     e.preventDefault()
+    )
+
+    const handleTracksUpdate = (e) => {
+        e.preventDefault()
+        console.log(newNumber)
+        console.log(newTitle)
     //     const url = `http://127.0.0.1:8000/api/v2/albums/${id}`
     //     const data = JSON.stringify({
     //         number: newNumber ? newNumber : album.title,
@@ -153,14 +204,14 @@ export default function UpdateTracks() {
     //             if (!res.ok) {
     //                 return alert('Falha ao atualizar dados da conta.', res)
     //             }
-    //             alert('Os dados da conta foram atualizados.')
+                    // navigate(`/album/${album.id}`)
     //         }
     //         catch (err) {
     //             console.error('error', err)
     //         }
     //     }
     //     updateTrack()
-    // }
+    }
 
     return (
         <Main>
@@ -168,13 +219,17 @@ export default function UpdateTracks() {
 
             <Container>
                 <H3>edit your tracks</H3>
+                <AlbumInfo>{albumInfo} (Album)</AlbumInfo>
                 <Data>
-                    <CoverPic
-                        src={`http://127.0.0.1:8000/storage/${coverPic}`}/>
-                    <FormTracksUpdate >
-                    {/* onSubmit={handleTracksUpdate} */}
-                        {listTracks}
-                        <Button type='submit'>save</Button>
+                    <FormTracksUpdate onSubmit={handleTracksUpdate}>
+                        <Tracks>
+                            <div>{listNumbers}</div>
+                            <div>{listTitles}</div>
+                        </Tracks>
+                        <div>
+                            <ButtonBack type='submit'>{'< back'}</ButtonBack>
+                            <Button type='submit'>save</Button>
+                        </div>
                     </FormTracksUpdate>
                 </Data>
             </Container>

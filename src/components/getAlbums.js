@@ -2,6 +2,11 @@ import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
+
+const Album = styled.div`
+    margin-bottom: 5vw;
+`;
+
 const H3 = styled.h3`
     color: #FED7AA;
     font-family: 'Poppins', sans-serif;
@@ -12,7 +17,7 @@ const H3 = styled.h3`
 const Albums = styled.div`
     display: flex;
     flex-direction: row;
-    gap: 2vw;
+    gap: 3vw;
 `;
 
 const AlbumInfo = styled(Link)`
@@ -27,6 +32,11 @@ const CoverPic = styled.img`
     width: 8vw;
     height: 8vw;
     border-radius: 8%;
+
+    &:hover {
+        filter: grayscale(1);
+        transition-duration: 500ms;
+    }
 `;
 
 const Title = styled.h6`
@@ -37,6 +47,12 @@ const Title = styled.h6`
     font-weight: 600;
     margin: 0;
     margin-top: 0.5vw;
+
+    &:hover {
+
+        color: #FED7AA;
+        text-decoration: underline;
+    }
 `;
 
 const ReleaseDate = styled.p`
@@ -79,7 +95,7 @@ export default function GetAlbums() {
     }
 
     const listAlbums = albums.map(al => 
-        <AlbumInfo to={`/album/${al.album.id}`}>
+        <AlbumInfo key={al.album.id} to={`/album/${al.album.id}`}>
             <CoverPic src={`http://127.0.0.1:8000/storage/${al.album.cover_pic}`}/>
             <Title>{al.album.title}</Title>
             <ReleaseDate>{formatReleaseDate(al.album.release_date)}</ReleaseDate>
@@ -87,11 +103,11 @@ export default function GetAlbums() {
     )
 
     return (
-        <>
+        <Album>
             <H3>your albums</H3>
             <Albums>
                 {listAlbums}
             </Albums>
-        </>
+        </Album>
     )
 }

@@ -7,7 +7,7 @@ import InputMask from 'react-input-mask'
 import ShapeBottom from '../components/shapeBottom'
 
 const Main = styled.main`
-    width: 100vw;
+    width: 100%;
     display: flex;
     flex-direction: column;
 `;
@@ -33,6 +33,14 @@ const H3 = styled.h3`
 const FormProfilePic = styled.form`
     display: inline-block;
     position: relative;
+    height: 8vw;
+    border-radius: 50%;
+    border: 5px solid transparent;
+
+    &:hover {
+        border: 5px solid #292524;
+        cursor: pointer;
+    }
 `;
 
 const ProfilePic = styled.img`
@@ -262,7 +270,7 @@ export default function Account() {
                                 ((`http://127.0.0.1:8000/storage/${user.profile_pic}` ?
                                 (`http://127.0.0.1:8000/storage/${user.profile_pic}`) :
                                 profile))}/>
-                        <InputFile type='file' name='profilePic' id='file' accept='.jpeg, .png, .jpg' onChange={(e) => HandleProfilePic(e)}/>
+                        <InputFile type='file' name='profilePic' id='file' title='Edit the profile picture.' accept='.jpeg, .png, .jpg' onChange={(e) => HandleProfilePic(e)}/>
                     </FormProfilePic>
                     <FormAccountUpdate onSubmit={handleAccountUpdate}>
                         <Input

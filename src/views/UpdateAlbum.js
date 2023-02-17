@@ -1,9 +1,10 @@
 import useDocumentTitle from '../components/useDocumentTitle'
 import NavBar from '../components/navBar'
 import styled from 'styled-components'
-import ShapeBottom from '../components/shapeBottom'
 import { useEffect, useState } from 'react'
 import InputMask from 'react-input-mask'
+import ShapeBottomAbsolute from '../components/shapeBottomAbsolute'
+import { useNavigate } from 'react-router-dom'
 
 const Main = styled.main`
     width: 100vw;
@@ -32,6 +33,14 @@ const Data = styled.div`
 const FormCoverPic = styled.form`
     display: inline-block;
     position: relative;
+    height: 8vw;
+    border-radius: 8%;
+    border: 5px solid transparent;
+
+    &:hover {
+        border: 5px solid #292524;
+        cursor: pointer;
+    }
 `;
 
 const CoverPic = styled.img`
@@ -48,11 +57,6 @@ const InputFile = styled.input`
     right: 0;
     bottom: 0;
     cursor: pointer;
-
-    &:hover {
-        border: 5px solid #292524;
-        cursor: pointer;
-    }
 `;
 
 const FormAlbumUpdate = styled.form`
@@ -99,20 +103,21 @@ const InputReleaseDate = styled(InputMask)`
 
 const Button = styled.button`
     width: 8vw;
-    background-color: #14B8A6;
+    background-color: #FED7AA;
     padding: 0.8vw;
     cursor: pointer;
     border: 0;
     border-radius: 0.5vw;
-    color: #E7E5E4;
+    color: #EA580C;
     font-family: 'Poppins', sans-serif;
     font-size: 1.1rem;
     font-weight: 700;
+    vertical-align: top;
 
     &:hover {
-    background-color: #FED7AA;
-    color: #EA580C;
-    transition-duration: 500ms;
+        background-color: #EA580C;
+        color: #FED7AA;
+        transition-duration: 500ms;
     }
 `;
 
@@ -125,6 +130,7 @@ export default function UpdateAlbum() {
     const [newCoverPic, setNewCoverPic] = useState(null)
     const [newTitle, setNewTitle] = useState('')
     const [newReleaseDate, setNewReleaseDate] = useState('')
+    const navigate = useNavigate()
 
     useEffect(() => {
         const reqAlbum = async () => {
@@ -214,7 +220,7 @@ export default function UpdateAlbum() {
                 if (!res.ok) {
                     return alert('Falha ao atualizar dados da conta.', res)
                 }
-                alert('Os dados da conta foram atualizados.')
+                navigate(`/album/edit-tracks/${album.id}`)
             }
             catch (err) {
                 console.error('error', err)
@@ -235,7 +241,7 @@ export default function UpdateAlbum() {
                             src={newCoverPic ?
                                 (`http://127.0.0.1:8000/storage/${newCoverPic}`) :
                                 (`http://127.0.0.1:8000/storage/${album.cover_pic}`)}/>
-                        <InputFile type='file' name='coverPic' id='file' accept='.jpeg, .png, .jpg' onChange={(e) => HandleCoverPic(e)}/>
+                        <InputFile type='file' name='coverPic' id='file' title='Edit the album cover.' accept='.jpeg, .png, .jpg' onChange={(e) => HandleCoverPic(e)}/>
                     </FormCoverPic>
                     <FormAlbumUpdate onSubmit={handleAlbumUpdate}>
                         <Input
@@ -251,11 +257,11 @@ export default function UpdateAlbum() {
                             placeholder={releaseDate}
                             value={newReleaseDate || releaseDate}
                             onChange={(e) => setNewReleaseDate(e.target.value)}/>
-                        <Button type='submit'>save</Button>
+                        <Button type='submit' title='Save album changes and edit your tracks.'>{'next >'}</Button>
                     </FormAlbumUpdate>
                 </Data>
             </Container>
-            <ShapeBottom/>
+            <ShapeBottomAbsolute/>
         </Main>
     )
 }

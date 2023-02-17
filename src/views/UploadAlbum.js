@@ -1,7 +1,7 @@
 import useDocumentTitle from '../components/useDocumentTitle'
 import NavBar from '../components/navBar'
 import styled from 'styled-components'
-import ShapeBottom from '../components/shapeBottom'
+import ShapeBottomAbsolute from '../components/shapeBottomAbsolute'
 import { useState } from 'react'
 import InputMask from 'react-input-mask'
 import profile from '../components/images/profile.svg'
@@ -25,15 +25,17 @@ const H3 = styled.h3`
     font-weight: 900;
 `;
 
-// const Data = styled.div`
-//     display: flex;
-//     flex-direction: row;
-//     gap: 3vw;
-// `;
-
 const DivCoverPic = styled.div`
     display: inline-block;
     position: relative;
+    height: 8vw;
+    border-radius: 8%;
+    border: 5px solid transparent;
+
+    &:hover {
+        border: 5px solid #292524;
+        cursor: pointer;
+    }
 `;
 
 const CoverPic = styled.img`
@@ -186,35 +188,33 @@ export default function UploadAlbum() {
             <NavBar/>
 
             <Container>
-                <H3>edit your album</H3>
-                {/* <Data> */}
-                    <FormAlbumUpdate onSubmit={handleAlbumUpload}>
-                        <DivCoverPic>
-                            <CoverPic
-                                src={profile}/>
-                            <InputFile type='file' name='coverPic' id='file' accept='.jpeg, .png, .jpg' onChange={(e) => HandleCoverPic(e)}
-                            />
-                        </DivCoverPic>
-                        <DivInputs>
-                            <Input
-                                type='text'
-                                name='title'
-                                placeholder={title || 'Album title'}
-                                value={title || ''}
-                                onChange={(e) => setTitle(e.target.value)}/>
-                            <InputReleaseDate
-                                type='dob'
-                                name='dob'
-                                mask='99/99/9999'
-                                placeholder={releaseDate || 'Album release date'}
-                                value={releaseDate || ''}
-                                onChange={(e) => setReleaseDate(e.target.value)}/>
-                            <Button type='submit'>save</Button>
-                        </DivInputs>
-                    </FormAlbumUpdate>
-                {/* </Data> */}
+                <H3>upload an album</H3>
+                <FormAlbumUpdate onSubmit={handleAlbumUpload}>
+                    <DivCoverPic>
+                        <CoverPic
+                            src={coverPic ? coverPic : profile}/>
+                        <InputFile type='file' name='coverPic' id='file' title='Upload the album cover.' accept='.jpeg, .png, .jpg' onChange={(e) => HandleCoverPic(e)}
+                        />
+                    </DivCoverPic>
+                    <DivInputs>
+                        <Input
+                            type='text'
+                            name='title'
+                            placeholder={title || 'Album title'}
+                            value={title || ''}
+                            onChange={(e) => setTitle(e.target.value)}/>
+                        <InputReleaseDate
+                            type='dob'
+                            name='dob'
+                            mask='99/99/9999'
+                            placeholder={releaseDate || 'Album release date'}
+                            value={releaseDate || ''}
+                            onChange={(e) => setReleaseDate(e.target.value)}/>
+                        <Button type='submit'>save</Button>
+                    </DivInputs>
+                </FormAlbumUpdate>
             </Container>
-            <ShapeBottom/>
+            <ShapeBottomAbsolute/>
         </Main>
     )
 }
