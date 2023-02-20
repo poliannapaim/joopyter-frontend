@@ -37,6 +37,24 @@ const Data = styled.div`
     gap: 3vw;
 `;
 
+const Message = styled.h6`
+    width: auto;
+    color: #DC2626;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+`;
+
+const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: #FED7AA;
+
+    &:hover {
+        text-decoration: underline;
+    }
+`;
+
 const Info = styled.div`
     display: flex;
     flex-direction: row;
@@ -65,6 +83,8 @@ const EditButton = styled(FaRegEdit)`
 `;
 
 const Button = styled.button`
+    width: auto;
+    padding: 1vw 1.5vw;
     background-color: #1C1917;
     color: #DC2626;
     font-size: 1.2rem;
@@ -109,48 +129,83 @@ const TrackData = styled.td`
 `;
 
 export default function Album() {
-    useDocumentTitle('album')
+    useDocumentTitle('álbum')
 
     const id = (window.location).href.split('/').pop()
     const [token] = useState(localStorage.getItem('auth_token'))
+    const [error, setError] = useState(null)
+    const [tries, setTries] = useState(0)
     const [album, setAlbum] = useState(null)
     const [tracks, setTracks] = useState(null)
     const navigate = useNavigate()
 
     useEffect(() => {
         const reqAlbum = async () => {
-            const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${id}`, {
-                headers: {
-                    Accept: 'application/json',
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            const json = await res.json()
-            if (!res.ok) {
-                return alert('Falha ao buscar o album.')
+            if (!token) {
+                return
             }
-            setAlbum(json.data.album)
-            setTracks(json.data.tracks)
+            setError(null)
+            try {
+                const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${id}`, {
+                    headers: {
+                        Accept: 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                const json = await res.json()
+                if (!res.ok) {
+                    return alert('Falha ao buscar os dados do álbum.')
+                }
+                setAlbum(json.data.album)
+                setTracks(json.data.tracks)
+            } catch (error) {
+                console.error(`Falha ao buscar os dados do álbum: ${error}`)
+                setError(error)
+            }
         }
         reqAlbum()
-    }, [token, id])
+    }, [token, id, setError, tries])
+
+    if (error) {
+        return (
+            <>
+                <H3>Erro ao buscar os dados do álbum.</H3>
+                <Button onClick={() => setTries(tries + 1)}>Tentar novamente</Button>
+            </>
+        )
+    }
 
     if (!album) {
-        return <H3>Por favor, faça o login para acessar o album.</H3>
+        return <></>
     }
+
     const [year, month, day] =  album.release_date.split('-')
     const formatedReleaseDate = `${day} · ${month} · ${year}`
 
-    const listTracks = tracks.map(tr => 
-        <tr key={tr.id}>
-            <TrackData>{tr.number}</TrackData>
-            <TrackData>{tr.title}</TrackData>
-        </tr>
+    const listTracks = tracks.length ? tracks.map(tr => (
+        <Tracks>     
+            <thead>
+                <tr>
+                    <TrackHead>#</TrackHead>
+                    <TrackHead>título</TrackHead>
+                </tr>
+            </thead>
+            <tbody>
+                <tr key={tr.id}>
+                    <TrackData>{tr.number}</TrackData>
+                    <TrackData>{tr.title}</TrackData>
+                </tr>
+            </tbody>
+        </Tracks>
+    )) : (
+        <Tracks>
+            <Message>Você ainda não possui músicas neste álbum. <StyledLink to={`/album/${album.id}/upload-tracks`}>Adicione!</StyledLink></Message>
+        </Tracks>
     )
 
     const handleAlbumDelete = (e) => {
         e.preventDefault()
-        if (window.confirm('Are you shure about deleting this album?') === true) {
+        if (window.confirm('você realmente deseja deletar o álbum?') === true) {
             const url = `http://127.0.0.1:8000/api/v2/albums/${album.id}`
             const options = {
                 method: 'DELETE',
@@ -164,13 +219,13 @@ export default function Album() {
                 try {
                     const res = await fetch(url, options)
                     if (!res.ok) {
-                        return alert('Falha ao deleter o álbum.', res)
+                        return alert(`Falha ao deleter o álbum: ${res}`)
                     }
-                    alert('The album was deleted.')
+                    alert('O álbum foi deletado.')
                     navigate('/dashboard')
                 }
-                catch (err) {
-                    console.error('error', err)
+                catch (error) {
+                    console.error(`Falha ao deleter o álbum: ${error}`)
                 }
             }
             deleteAlbum()
@@ -192,22 +247,11 @@ export default function Album() {
                         </div>
 
                         <div>
-                            <Link to={`/album/edit/${album.id}`} title={'Edit your album.'}><EditButton/></Link>
-                            <Button type='button' onClick={handleAlbumDelete}><FaRegTrashAlt/></Button>
+                            <Link to={`/album/edit/${album.id}`} title={'Editar o seu álbum.'}><EditButton/></Link>
+                            <Button type='button' onClick={handleAlbumDelete} title={'Deletar o seu álbum.'}><FaRegTrashAlt/></Button>
                         </div>
                     </Info>
-
-                    <Tracks>
-                        <thead>
-                            <tr>
-                                <TrackHead>#</TrackHead>
-                                <TrackHead>title</TrackHead>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {listTracks}
-                        </tbody>
-                    </Tracks>
+                    {listTracks}
                 </Data>
             </Container>
             <ShapeBottomAbsolute/>

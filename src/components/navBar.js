@@ -114,29 +114,33 @@ export default function NavBar() {
             return
         }
         const makeRequest = async () => {
-            const res = await fetch('http://127.0.0.1:8000/api/v2/user', {
-                headers: {
-                    Accept: 'application/json',
-                    Authorization: `Bearer ${token}`
+            try {
+                const res = await fetch('http://127.0.0.1:8000/api/v2/user', {
+                    headers: {
+                        Accept: 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                const json = await res.json()
+                if (!res.ok) {
+                    return alert('Falha ao buscar a conta.')
                 }
-            })
-            const json = await res.json()
-            if (!res.ok) {
-                return alert('falha ao buscar usuário.')
+                setUser(json)
+            } catch (error) {
+                console.error(`Erro ao buscar conta: ${error}`)
             }
-            setUser(json)
         }
         makeRequest()
     }, [token])
 
     const handleLogout = () => {
-        localStorage.removeItem('auth-token')
+        localStorage.removeItem('auth_token')
         setToken(null)
         navigate('/')
     }
 
-    if (!user) {
-        return <h1>usuário não logado</h1>
+    if (!token) {
+        return <h1>Você não está logado.</h1>
     }
     
     return (
@@ -148,7 +152,7 @@ export default function NavBar() {
 
             <DropDown>
                 <DropDownButton onClick={getDropdownLinks}>
-                    <DropDownImg src={user.profile_pic ? (
+                    <DropDownImg src={user?.profile_pic ? (
                         `http://127.0.0.1:8000/storage/${user.profile_pic}`
                         ) : (profile)}
                         active={isOpen}/>
@@ -156,11 +160,11 @@ export default function NavBar() {
 
                 {isOpen && (
                     <DropDownLinks>
-                        <DropDownName>{user.name.split(" ")[0]}</DropDownName>
+                        <DropDownName>{user?.name.split(" ")[0]}</DropDownName>
                         <Divider/>
-                        <Link to='/account' className='auth-link'>edit account</Link>   
-                        <Link to='/upload-album' className='auth-link'>upload album</Link>
-                        <button type='button' className='button-logout' onClick={handleLogout}>logout</button>
+                        <Link to='/account' className='auth-link'>atualizar conta</Link>   
+                        <Link to='/upload-album' className='auth-link'>registrar álbum</Link>
+                        <button type='button' className='button-logout' onClick={handleLogout}>sair</button>
                     </DropDownLinks>
                 )}
             </DropDown>

@@ -102,27 +102,27 @@ const InputReleaseDate = styled(InputMask)`
 `;
 
 const Button = styled.button`
-    width: 8vw;
-    background-color: #FED7AA;
-    padding: 0.8vw;
+    width: auto;
+    padding: 1vw 1.5vw;
+    background-color: #14B8A6;
     cursor: pointer;
     border: 0;
     border-radius: 0.5vw;
-    color: #EA580C;
+    color: #E7E5E4;
     font-family: 'Poppins', sans-serif;
     font-size: 1.1rem;
     font-weight: 700;
     vertical-align: top;
 
     &:hover {
-        background-color: #EA580C;
-        color: #FED7AA;
+        background-color: #FED7AA;
+        color: #EA580C;
         transition-duration: 500ms;
     }
 `;
 
 export default function UpdateAlbum() {
-    useDocumentTitle('edit your album')
+    useDocumentTitle('editar álbum')
 
     const id = (window.location).href.split('/').pop()
     const [token] = useState(localStorage.getItem('auth_token'))
@@ -134,23 +134,27 @@ export default function UpdateAlbum() {
 
     useEffect(() => {
         const reqAlbum = async () => {
-            const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${id}`, {
-                headers: {
-                    Accept: 'application/json',
-                    Authorization: `Bearer ${token}`
+            try {
+                const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${id}`, {
+                    headers: {
+                        Accept: 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                const json = await res.json()
+                if (!res.ok) {
+                    return alert(`Falha ao buscar o álbum: ${res}`)
                 }
-            })
-            const json = await res.json()
-            if (!res.ok) {
-                return alert('Falha ao buscar o album.')
+                setAlbum(json.data.album)
+            } catch (error) {
+                console.error(`Falha ao buscar o álbum: ${error}`)
             }
-            setAlbum(json.data.album)
         }
         reqAlbum()
     }, [token, id])
 
     if (!album) {
-        return <H3>Por favor, faça o login para acessar o album.</H3>
+        return <></>
     }
     
     const [year, month, day] =  album.release_date.split('-')
@@ -181,12 +185,12 @@ export default function UpdateAlbum() {
                     const json = await res.json()
 
                     if (!res.ok) {
-                        return alert('Falha ao atualizar a capa do álbum.', res)
+                        return alert(`Falha ao atualizar a capa do álbum: ${res}`)
                     }
                     setNewCoverPic(json.data['cover_pic'])
                 }
-                catch (err) {
-                    console.error('error', err)
+                catch (error) {
+                    console.error(`Falha ao atualizar a capa do álbum: ${error}`)
                 }
             }
             updateCoverPic()
@@ -218,12 +222,12 @@ export default function UpdateAlbum() {
             try {
                 const res = await fetch(url, options)
                 if (!res.ok) {
-                    return alert('Falha ao atualizar dados da conta.', res)
+                    return alert(`Falha ao atualizar os dados da conta: ${res}`)
                 }
                 navigate(`/album/edit-tracks/${album.id}`)
             }
-            catch (err) {
-                console.error('error', err)
+            catch (error) {
+                console.error(`Falha ao atualizar os dados da conta: ${error}`)
             }
         }
         updateAlbum()
@@ -234,14 +238,14 @@ export default function UpdateAlbum() {
             <NavBar/>
 
             <Container>
-                <H3>edit your album</H3>
+                <H3>editar álbum</H3>
                 <Data>
                     <FormCoverPic>
                         <CoverPic
                             src={newCoverPic ?
                                 (`http://127.0.0.1:8000/storage/${newCoverPic}`) :
                                 (`http://127.0.0.1:8000/storage/${album.cover_pic}`)}/>
-                        <InputFile type='file' name='coverPic' id='file' title='Edit the album cover.' accept='.jpeg, .png, .jpg' onChange={(e) => HandleCoverPic(e)}/>
+                        <InputFile type='file' name='coverPic' id='file' title='Editar capa do álbum.' accept='.jpeg, .png, .jpg' onChange={(e) => HandleCoverPic(e)}/>
                     </FormCoverPic>
                     <FormAlbumUpdate onSubmit={handleAlbumUpdate}>
                         <Input
@@ -257,7 +261,7 @@ export default function UpdateAlbum() {
                             placeholder={releaseDate}
                             value={newReleaseDate || releaseDate}
                             onChange={(e) => setNewReleaseDate(e.target.value)}/>
-                        <Button type='submit' title='Save album changes and edit your tracks.'>{'next >'}</Button>
+                        <Button type='submit' title='Salvar as alterações e editar as músicas.'>{'salvar & seguir'}</Button>
                     </FormAlbumUpdate>
                 </Data>
             </Container>

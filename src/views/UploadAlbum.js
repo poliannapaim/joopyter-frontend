@@ -5,7 +5,6 @@ import ShapeBottomAbsolute from '../components/shapeBottomAbsolute'
 import { useState } from 'react'
 import InputMask from 'react-input-mask'
 import profile from '../components/images/profile.svg'
-import { useNavigate } from 'react-router-dom'
 
 const Main = styled.main`
     width: 100vw;
@@ -109,9 +108,9 @@ const InputReleaseDate = styled(InputMask)`
 `;
 
 const Button = styled.button`
-    width: 8vw;
+    width: auto;
+    padding: 1vw 1.5vw;
     background-color: #14B8A6;
-    padding: 0.8vw;
     cursor: pointer;
     border: 0;
     border-radius: 0.5vw;
@@ -128,13 +127,12 @@ const Button = styled.button`
 `;
 
 export default function UploadAlbum() {
-    useDocumentTitle('upload an album')
+    useDocumentTitle('registrar álbum')
 
     const [token] = useState(localStorage.getItem('auth_token'))
     const [coverPic, setCoverPic] = useState(null)
     const [title, setTitle] = useState('')
     const [releaseDate, setReleaseDate] = useState('')
-    const navigate = useNavigate()
 
     function HandleCoverPic(e) {
         e.preventDefault()
@@ -171,13 +169,15 @@ export default function UploadAlbum() {
             try {
                 const res = await fetch(url, options)
                 if (!res.ok) {
-                    return alert('Falha criar novo álbum.', res)
+                    return alert(`Falha criar novo álbum: ${res}`)
                 }
                 alert('O novo álbum foi criado.')
-                navigate('/dashboard')
+                setCoverPic(null)
+                setTitle('')
+                setReleaseDate('')
             }
-            catch (err) {
-                console.error('error', err)
+            catch (error) {
+                console.error(`Falha criar novo álbum: ${error}`)
             }
         }
         uploadAlbum()
@@ -188,29 +188,29 @@ export default function UploadAlbum() {
             <NavBar/>
 
             <Container>
-                <H3>upload an album</H3>
+                <H3>registrar álbum</H3>
                 <FormAlbumUpdate onSubmit={handleAlbumUpload}>
                     <DivCoverPic>
                         <CoverPic
                             src={coverPic ? coverPic : profile}/>
-                        <InputFile type='file' name='coverPic' id='file' title='Upload the album cover.' accept='.jpeg, .png, .jpg' onChange={(e) => HandleCoverPic(e)}
+                        <InputFile type='file' name='coverPic' id='file' title='Enviar foto de capa do álbum.' accept='.jpeg, .png, .jpg' onChange={(e) => HandleCoverPic(e)}
                         />
                     </DivCoverPic>
                     <DivInputs>
                         <Input
                             type='text'
                             name='title'
-                            placeholder={title || 'Album title'}
+                            placeholder={title || 'Título do álbum'}
                             value={title || ''}
                             onChange={(e) => setTitle(e.target.value)}/>
                         <InputReleaseDate
                             type='dob'
                             name='dob'
                             mask='99/99/9999'
-                            placeholder={releaseDate || 'Album release date'}
+                            placeholder={releaseDate || 'Data de lançamento'}
                             value={releaseDate || ''}
                             onChange={(e) => setReleaseDate(e.target.value)}/>
-                        <Button type='submit'>save</Button>
+                        <Button type='submit'>salvar</Button>
                     </DivInputs>
                 </FormAlbumUpdate>
             </Container>

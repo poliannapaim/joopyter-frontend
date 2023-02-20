@@ -6,7 +6,7 @@ function Register() {
 
     return (
         <>
-            <h1>oi</h1>
+            <h1>register</h1>
         </>
     )
 }

@@ -3,6 +3,8 @@ import NavBar from '../components/navBar'
 import styled from 'styled-components'
 import ShapeBottom from '../components/shapeBottom'
 import { useEffect, useState } from 'react'
+import ShapeBottomAbsolute from '../components/shapeBottomAbsolute'
+import { Link } from 'react-router-dom'
 
 const Main = styled.main`
     width: 100%;
@@ -21,6 +23,25 @@ const H3 = styled.h3`
     font-size: 2.5rem;
     font-weight: 900;
     margin-bottom: 4vw;
+`;
+
+const Message = styled.h6`
+    width: auto;
+    color: #DC2626;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    margin-top: 3vw;
+`;
+
+const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: #FED7AA;
+
+    &:hover {
+        text-decoration: underline;
+    }
 `;
 
 const AlbumInfo = styled.p`
@@ -110,7 +131,7 @@ const ButtonBack = styled(Button)`
 `;
 
 export default function UpdateTracks() {
-    useDocumentTitle('edit your tracks')
+    useDocumentTitle('editar as músicas')
 
     const id = (window.location).href.split('/').pop()
     const [token] = useState(localStorage.getItem('auth_token'))
@@ -121,27 +142,32 @@ export default function UpdateTracks() {
 
     useEffect(() => {
         const reqAlbum = async () => {
-            const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${id}`, {
-                headers: {
-                    Accept: 'application/json',
-                    Authorization: `Bearer ${token}`
+            try {
+                const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${id}`, {
+                    headers: {
+                        Accept: 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                const json = await res.json()
+                if (!res.ok) {
+                    return alert(`Falha ao buscar o álbum: ${res}`)
                 }
-            })
-            const json = await res.json()
-            if (!res.ok) {
-                return alert('Falha ao buscar o album.')
+                setTracks(json.data.tracks)
+                setAlbumInfo(json.data.album)
+            } catch (error) {
+                console.error(`Falha ao buscar o álbum: ${error}`)
             }
-            setTracks(json.data.tracks)
-            setAlbumInfo(json.data.album.title)
         }
         reqAlbum()
     }, [token, id])
 
     if (!tracks) {
-        return <H3>Por favor, faça o login para acessar as tracks do álbum.</H3>
+        return <></>
     }
+    
+    const [year] =  albumInfo.release_date.split('-')
 
-    // console.log(tracks)
     const updateNumberChange = id => (e) => {
         let numberArr = []
         numberArr[id] = e.target.value
@@ -158,27 +184,44 @@ export default function UpdateTracks() {
         setNewTitle(titleArr)
     }
 
-    const listNumbers = tracks.map((tr)=> 
-        <div key={tr.id}>
-            <InputNumber
-            type='number'
-            name='number'
-            placeholder={tr.number}
-            value={newNumber[tr.id] || tr.number}
-            onChange={updateNumberChange(tr.id)}/>
-        </div>
+    const listTracks = tracks.lenght ? tracks.map((tr) => (
+        <FormTracksUpdate onSubmit={handleTracksUpdate}>
+            <Tracks>
+                <div>
+                    <div key={tr.id}>
+                        <InputNumber
+                        type='number'
+                        name='number'
+                        placeholder={tr.number}
+                        value={newNumber[tr.id] || tr.number}
+                        onChange={updateNumberChange(tr.id)}/>
+                    </div>
+                </div>
+                <div>
+                    <div key={tr.id}>
+                        <Input
+                        type='text'
+                        name='title'
+                        placeholder={tr.title}
+                        value={newTitle[tr.id] || tr.title}
+                        onChange={updateTitleChange(tr.id)}/>
+                    </div>
+                </div>
+            </Tracks>
+                        
+            <div>
+                <ButtonBack type='submit'>{'< voltar'}</ButtonBack>
+                <Button type='submit'>salvar</Button>
+            </div>
+        </FormTracksUpdate>
+    )) : (
+        <Message>Você ainda não possui músicas neste álbum. <StyledLink to='/update-tracks'>Adicione!</StyledLink></Message>
     )
-    const listTitles = tracks.map((tr) => 
-        <div key={tr.id}>
-            <Input
-            type='text'
-            name='title'
-            placeholder={tr.title}
-            value={newTitle[tr.id] || tr.title}
-            onChange={updateTitleChange(tr.id)}/>
-        </div>
 
-    )
+    const getShapeBottom = tracks.lenght ? (
+        <ShapeBottom/>
+    ) : ( <ShapeBottomAbsolute/> )
+    
 
     const handleTracksUpdate = (e) => {
         e.preventDefault()
@@ -218,22 +261,13 @@ export default function UpdateTracks() {
             <NavBar/>
 
             <Container>
-                <H3>edit your tracks</H3>
-                <AlbumInfo>{albumInfo} (Album)</AlbumInfo>
+                <H3>editar as músicas</H3>
+                <AlbumInfo>álbum selecionado: {albumInfo.title} ({year})</AlbumInfo>
                 <Data>
-                    <FormTracksUpdate onSubmit={handleTracksUpdate}>
-                        <Tracks>
-                            <div>{listNumbers}</div>
-                            <div>{listTitles}</div>
-                        </Tracks>
-                        <div>
-                            <ButtonBack type='submit'>{'< back'}</ButtonBack>
-                            <Button type='submit'>save</Button>
-                        </div>
-                    </FormTracksUpdate>
+                    {listTracks}
                 </Data>
             </Container>
-            <ShapeBottom/>
+            {getShapeBottom}
         </Main>
     )
 }

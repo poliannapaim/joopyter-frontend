@@ -46,9 +46,9 @@ export default function Form() {
   return (
     <form className='form' onSubmit={handleLogin}>
         <input className='input' type='email' placeholder='email' name='email' value={email || ''} onChange={(e) => setEmail(e.target.value)}/>
-        <input className='input' type='password' placeholder='password' name='password' value={password || ''} onChange={(e) => setPassword(e.target.value)}/>
+        <input className='input' type='password' placeholder='senha' name='password' value={password || ''} onChange={(e) => setPassword(e.target.value)}/>
 
-        <button className='button' type='submit'>login</button>
+        <button className='button' type='submit'>entrar</button>
     </form>
   )
 }

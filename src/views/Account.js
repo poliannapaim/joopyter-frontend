@@ -124,9 +124,9 @@ const InputBio = styled.textarea`
 `;
 
 const Button = styled.button`
-    width: 8vw;
+    width: auto;
+    padding: 1vw 1.5vw;
     background-color: #14B8A6;
-    padding: 0.8vw;
     cursor: pointer;
     border: 0;
     border-radius: 0.5vw;
@@ -136,14 +136,14 @@ const Button = styled.button`
     font-weight: 700;
 
     &:hover {
-    background-color: #FED7AA;
-    color: #EA580C;
-    transition-duration: 500ms;
+        background-color: #FED7AA;
+        color: #EA580C;
+        transition-duration: 500ms;
     }
 `;
 
 export default function Account() {
-    useDocumentTitle('account')
+    useDocumentTitle('atualizar conta')
 
     const [token] = useState(localStorage.getItem('auth_token'))
     const [user, setUser] = useState(null)
@@ -245,12 +245,12 @@ export default function Account() {
             try {
                 const res = await fetch(url, options)
                 if (!res.ok) {
-                    return alert('Falha ao atualizar dados da conta.', res)
+                    return alert('Falha ao atualizar os dados da conta.', res)
                 }
                 alert('Os dados da conta foram atualizados.')
             }
-            catch (err) {
-                console.error('error', err)
+            catch (error) {
+                console.error(`Erro ao buscar os dados da conta: ${error}`)
             }
         }
         updateAccount()
@@ -261,7 +261,7 @@ export default function Account() {
             <NavBar/>
 
             <Container>
-                <H3>account</H3>
+                <H3>atualizar conta</H3>
                 <Data>
                     <FormProfilePic>
                         <ProfilePic
@@ -270,7 +270,7 @@ export default function Account() {
                                 ((`http://127.0.0.1:8000/storage/${user.profile_pic}` ?
                                 (`http://127.0.0.1:8000/storage/${user.profile_pic}`) :
                                 profile))}/>
-                        <InputFile type='file' name='profilePic' id='file' title='Edit the profile picture.' accept='.jpeg, .png, .jpg' onChange={(e) => HandleProfilePic(e)}/>
+                        <InputFile type='file' name='profilePic' id='file' title='Editar foto de perfil.' accept='.jpeg, .png, .jpg' onChange={(e) => HandleProfilePic(e)}/>
                     </FormProfilePic>
                     <FormAccountUpdate onSubmit={handleAccountUpdate}>
                         <Input
@@ -298,7 +298,7 @@ export default function Account() {
                             placeholder={user.bio ? user.bio : 'bio'}
                             value={newBio || user.bio}
                             onChange={(e) => setNewBio(e.target.value)}/>
-                        <Button type='submit'>save</Button>
+                        <Button type='submit'>salvar</Button>
                     </FormAccountUpdate>
                 </Data>
             </Container>

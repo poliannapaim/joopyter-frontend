@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { keyframes } from 'styled-components'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -49,9 +50,17 @@ const Title = styled.h6`
     margin-top: 0.5vw;
 
     &:hover {
-
         color: #FED7AA;
         text-decoration: underline;
+    }
+`;
+
+const Message = styled(Title)`
+    color: #EA580C;
+
+    &:hover {
+        color: #EA580C;
+        text-decoration: none;
     }
 `;
 
@@ -64,29 +73,137 @@ const ReleaseDate = styled.p`
     margin: 0;
 `;
 
+const Button = styled.button`
+    width: auto;
+    padding: 1vw 1.5vw;
+    background-color: #14B8A6;
+    cursor: pointer;
+    border: 0;
+    border-radius: 0.5vw;
+    color: #E7E5E4;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+
+    &:hover {
+    background-color: #FED7AA;
+    color: #EA580C;
+    transition-duration: 500ms;
+    }
+`;
+
+const skeletonLoading = keyframes`
+    0% {
+        background-color: hsl(12, 6%, 20%);
+    }
+    100% {
+        background-color: hsl(12, 6%, 15%);
+    }
+`;
+
+const H3Skeleton = styled.h3`
+    width: 20vw;
+    height: 3.5vw;
+    font-size: 2.5rem;
+    font-weight: 900;
+    animation: ${skeletonLoading} 1s linear infinite alternate;
+`;
+
+const CoverPicSkeleton = styled.div`
+    width: 8vw;
+    height: 8vw;
+    border-radius: 8%;
+    animation: ${skeletonLoading} 1s linear infinite alternate;
+`;
+
+const TitleSkeleton = styled.h6`
+    width: 7vw;
+    height: 1vw;
+    margin: 0;
+    margin-top: 0.5vw;
+    font-size: 1rem;
+    animation: ${skeletonLoading} 1s linear infinite alternate;
+`;
+
+const ReleaseDateSkeleton = styled.p`
+    width: 6vw;
+    height: 0.7vw;
+    margin: 0;
+    margin-top: 0.5vw;
+    animation: ${skeletonLoading} 1s linear infinite alternate;
+`;
+
 export default function GetAlbums() {
     const [token] = useState(localStorage.getItem('auth_token'))
+    const [isFetching, setIsFetching] = useState(false)
+    const [tries, setTries] = useState(0)
+    const [error, setError] = useState(null)
     const [albums, setAlbums] = useState(null)
 
     useEffect(() => {
+        if (!token) {
+            return
+        }
         const reqAlbums = async () => {
-            const res = await fetch('http://127.0.0.1:8000/api/v2/albums', {
-                headers: {
-                    Accept: 'application/json',
-                    Authorization: `Bearer ${token}`
+            setIsFetching(true)
+            setError(null)
+            try {
+                const res = await fetch('http://127.0.0.1:8000/api/v2/albums', {
+                    headers: {
+                        Accept: 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                const json = await res.json()
+                if (!res.ok) {
+                    return alert('Falha ao buscar os albums da conta.')
                 }
-            })
-            const json = await res.json()
-            if (!res.ok) {
-                return alert('Falha ao buscar os albums da conta.')
+                setAlbums(json.data)
+            } catch (error) {
+                console.error(`Erro ao buscar álbuns: ${error}`)
+                setError(error)
             }
-            setAlbums(json.data)
+            setIsFetching(false)
         }
         reqAlbums()
-    }, [token])
+    }, [token, setIsFetching, setError, tries])
+
+    if (error) {
+        return (
+            <>
+                <H3>Erro ao buscar os álbuns.</H3>
+                <Button onClick={() => setTries(tries + 1)}>Tentar novamente</Button>
+            </>
+        )
+    }
+
+    if (isFetching) {
+        return (
+            <Album>
+                <H3Skeleton/>
+                <Albums>
+                    <div>
+                        <CoverPicSkeleton/>
+                        <TitleSkeleton/>
+                        <ReleaseDateSkeleton/>
+                    </div>
+                    <div>
+                        <CoverPicSkeleton/>
+                        <TitleSkeleton/>
+                        <ReleaseDateSkeleton/>
+                    </div>
+                    <div>
+                        <CoverPicSkeleton/>
+                        <TitleSkeleton/>
+                        <ReleaseDateSkeleton/>
+                    </div>
+                </Albums>
+            </Album>
+        )
+    }
 
     if (!albums) {
-        return <H3>Por favor, faça o login para acessar os albums.</H3>
+        return <></>
     }
     
     const formatReleaseDate = (releaseDate) => {
@@ -94,17 +211,19 @@ export default function GetAlbums() {
         return `${day} · ${month} · ${year}`
     }
 
-    const listAlbums = albums.map(al => 
+    const listAlbums = albums.length ? albums.map(al => 
         <AlbumInfo key={al.album.id} to={`/album/${al.album.id}`}>
             <CoverPic src={`http://127.0.0.1:8000/storage/${al.album.cover_pic}`}/>
             <Title>{al.album.title}</Title>
             <ReleaseDate>{formatReleaseDate(al.album.release_date)}</ReleaseDate>
         </AlbumInfo>
+    ) : (
+        <Message>Você ainda não possui álbuns.</Message>
     )
 
     return (
         <Album>
-            <H3>your albums</H3>
+            <H3>seus álbuns</H3>
             <Albums>
                 {listAlbums}
             </Albums>
