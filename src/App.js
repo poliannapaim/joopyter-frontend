@@ -56,12 +56,12 @@ function App() {
               <Account/>
             </ProtectedRoute>
           }/>
-          <Route path='/album/:id' element={
+          <Route path='/album/:albumId' element={
             <ProtectedRoute>
               <Album/>
             </ProtectedRoute>
           }/>
-          <Route path='/album/edit/:id' element={
+          <Route path='/album/:albumId/edit' element={
             <ProtectedRoute>
               <UpdateAlbum/>
             </ProtectedRoute>
@@ -71,12 +71,12 @@ function App() {
               <UploadAlbum/>
             </ProtectedRoute>
           }/>
-          <Route path='/album/edit-tracks/:id' element={
+          <Route path='/album/:albumId/edit-tracks' element={
             <ProtectedRoute>
               <UpdateTracks/>
             </ProtectedRoute>
           }/>
-          <Route path='/album/:id/upload-tracks/' element={
+          <Route path='/album/:albumId/upload-tracks' element={
             <ProtectedRoute>
               <UploadTracks/>
             </ProtectedRoute>

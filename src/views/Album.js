@@ -159,7 +159,7 @@ export default function Album() {
                 setAlbum(json.data.album)
                 setTracks(json.data.tracks)
             } catch (error) {
-                console.error(`Falha ao buscar os dados do álbum: ${error}`)
+                console.error(`Erro ao buscar os dados do álbum: ${error}`)
                 setError(error)
             }
         }
@@ -219,13 +219,13 @@ export default function Album() {
                 try {
                     const res = await fetch(url, options)
                     if (!res.ok) {
-                        return alert(`Falha ao deleter o álbum: ${res}`)
+                        return alert(`Falha ao deletar o álbum: ${res}`)
                     }
                     alert('O álbum foi deletado.')
                     navigate('/dashboard')
                 }
                 catch (error) {
-                    console.error(`Falha ao deleter o álbum: ${error}`)
+                    console.error(`Erro ao deletar o álbum: ${error}`)
                 }
             }
             deleteAlbum()
@@ -247,7 +247,7 @@ export default function Album() {
                         </div>
 
                         <div>
-                            <Link to={`/album/edit/${album.id}`} title={'Editar o seu álbum.'}><EditButton/></Link>
+                            <Link to={`/album/${album.id}/edit`} title={'Editar o seu álbum.'}><EditButton/></Link>
                             <Button type='button' onClick={handleAlbumDelete} title={'Deletar o seu álbum.'}><FaRegTrashAlt/></Button>
                         </div>
                     </Info>

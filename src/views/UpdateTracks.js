@@ -4,7 +4,9 @@ import styled from 'styled-components'
 import ShapeBottom from '../components/shapeBottom'
 import { useEffect, useState } from 'react'
 import ShapeBottomAbsolute from '../components/shapeBottomAbsolute'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import { FaRegTrashAlt } from 'react-icons/fa'
 
 const Main = styled.main`
     width: 100%;
@@ -74,6 +76,7 @@ const FormTracksUpdate = styled.form`
 const Tracks = styled.div`
     display: flex;
     flex-direction: row;
+    align-items: center;
     gap: 2vw;
 `
 
@@ -130,20 +133,29 @@ const ButtonBack = styled(Button)`
     }
 `;
 
+const RemoveButton = styled(FaRegTrashAlt)`
+    color: #DC2626;
+    font-size: 1.2rem;
+    background-color: transparent;
+    cursor: pointer;
+`;
+
 export default function UpdateTracks() {
     useDocumentTitle('editar as músicas')
 
-    const id = (window.location).href.split('/').pop()
+    let { albumId } = useParams()
     const [token] = useState(localStorage.getItem('auth_token'))
     const [tracks, setTracks] = useState(null)
     const [albumInfo, setAlbumInfo] = useState(null)
     const [newNumber, setNewNumber] = useState([])
     const [newTitle, setNewTitle] = useState([])
+    const navigate = useNavigate()
+
 
     useEffect(() => {
         const reqAlbum = async () => {
             try {
-                const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${id}`, {
+                const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${albumId}`, {
                     headers: {
                         Accept: 'application/json',
                         Authorization: `Bearer ${token}`
@@ -156,11 +168,11 @@ export default function UpdateTracks() {
                 setTracks(json.data.tracks)
                 setAlbumInfo(json.data.album)
             } catch (error) {
-                console.error(`Falha ao buscar o álbum: ${error}`)
+                console.error(`Erro ao buscar o álbum: ${error}`)
             }
         }
         reqAlbum()
-    }, [token, id])
+    }, [token, albumId])
 
     if (!tracks) {
         return <></>
@@ -184,77 +196,97 @@ export default function UpdateTracks() {
         setNewTitle(titleArr)
     }
 
-    const listTracks = tracks.lenght ? tracks.map((tr) => (
+    const handleTracksUpdate = (e) => {
+        e.preventDefault()
+        // const url = `http://127.0.0.1:8000/api/v2/albums/${albumId}`
+        // const data = JSON.stringify({
+        //     number: newNumber ? newNumber : album.title,
+        //     title: newTitle ? newTitle : album.title,
+        // })
+        // const options = {
+        //     method: 'PUT',
+        //     headers: {
+        //         Accept: 'application/json',
+        //         'Content-Type': 'application/json',
+        //         Authorization: `Bearer ${token}`
+        //     },
+        //     body: data
+        // }
+        // const updateTrack = async () => {
+        //     try {
+        //         const res = await fetch(url, options)
+        //         if (!res.ok) {
+        //             return alert('Falha ao atualizar dados da conta.', res)
+        //         }
+        //         alert('As atualizações foram salvas.')
+        //     }
+        //     catch (err) {
+        //         console.error('error', err)
+        //     }
+        // }
+        // updateTrack()
+    }
+
+    const handleTrackDelete = (e, id) => {
+        e.preventDefault()
+        if (window.confirm('Você realmente deseja deletar essa música?') === true) {
+            const url = `http://127.0.0.1:8000/api/v2/albums/${albumId}/tracks/${id}`
+            const options = {
+                method: 'DELETE',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            const deleteTrack = async () => {
+                try {
+                    const res = await fetch(url, options)
+                    if (!res.ok) {
+                        return alert(`Falha ao deletar a música: ${res}`)
+                    }
+                    alert('A música foi deletada.')
+                    navigate(0)
+                }
+                catch (error) {
+                    console.error(`Erro ao deletar a música: ${error}`)
+                }
+            }
+            deleteTrack()
+        }
+    }
+
+    const listTracks = tracks.length ? 
         <FormTracksUpdate onSubmit={handleTracksUpdate}>
-            <Tracks>
-                <div>
-                    <div key={tr.id}>
-                        <InputNumber
+            { tracks.map((tr) => (
+                <Tracks key={tr.id}>
+                    <InputNumber
                         type='number'
                         name='number'
                         placeholder={tr.number}
                         value={newNumber[tr.id] || tr.number}
                         onChange={updateNumberChange(tr.id)}/>
-                    </div>
-                </div>
-                <div>
-                    <div key={tr.id}>
-                        <Input
+                    <Input
                         type='text'
                         name='title'
                         placeholder={tr.title}
                         value={newTitle[tr.id] || tr.title}
                         onChange={updateTitleChange(tr.id)}/>
-                    </div>
-                </div>
-            </Tracks>
-                        
+                    <RemoveButton onClick={(e) => handleTrackDelete(e, tr.id)} title={'Deletar a música.'}/>
+                </Tracks>   
+            ))}  
             <div>
                 <ButtonBack type='submit'>{'< voltar'}</ButtonBack>
                 <Button type='submit'>salvar</Button>
             </div>
         </FormTracksUpdate>
-    )) : (
+    : (
         <Message>Você ainda não possui músicas neste álbum. <StyledLink to='/update-tracks'>Adicione!</StyledLink></Message>
     )
 
     const getShapeBottom = tracks.lenght ? (
         <ShapeBottom/>
     ) : ( <ShapeBottomAbsolute/> )
-    
-
-    const handleTracksUpdate = (e) => {
-        e.preventDefault()
-        console.log(newNumber)
-        console.log(newTitle)
-    //     const url = `http://127.0.0.1:8000/api/v2/albums/${id}`
-    //     const data = JSON.stringify({
-    //         number: newNumber ? newNumber : album.title,
-    //         title: newTitle ? newTitle : album.title,
-    //     })
-    //     const options = {
-    //         method: 'PUT',
-    //         headers: {
-    //             Accept: 'application/json',
-    //             'Content-Type': 'application/json',
-    //             Authorization: `Bearer ${token}`
-    //         },
-    //         body: data
-    //     }
-    //     const updateTrack = async () => {
-    //         try {
-    //             const res = await fetch(url, options)
-    //             if (!res.ok) {
-    //                 return alert('Falha ao atualizar dados da conta.', res)
-    //             }
-                    // navigate(`/album/${album.id}`)
-    //         }
-    //         catch (err) {
-    //             console.error('error', err)
-    //         }
-    //     }
-    //     updateTrack()
-    }
 
     return (
         <Main>

@@ -206,12 +206,12 @@ export default function Account() {
                     const json = await res.json()
             
                     if (!res.ok) {
-                        return alert('Falha ao atualizar a foto de perfil.', res)
+                        return alert(`Falha ao atualizar a foto de perfil: ${res}`)
                     }
                     setNewProfilePic(json.data['profile_pic'])
                 }
-                catch (err) {
-                    console.error('error', err)
+                catch (error) {
+                    console.error(`Erro ao atualizar a foto de perfil: ${error}`)
                 }
             }
             updatePic()

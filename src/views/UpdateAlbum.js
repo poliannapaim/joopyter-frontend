@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 import InputMask from 'react-input-mask'
 import ShapeBottomAbsolute from '../components/shapeBottomAbsolute'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const Main = styled.main`
     width: 100vw;
@@ -123,8 +123,8 @@ const Button = styled.button`
 
 export default function UpdateAlbum() {
     useDocumentTitle('editar álbum')
-
-    const id = (window.location).href.split('/').pop()
+    
+    let { albumId } = useParams()
     const [token] = useState(localStorage.getItem('auth_token'))
     const [album, setAlbum] = useState(null)
     const [newCoverPic, setNewCoverPic] = useState(null)
@@ -135,7 +135,7 @@ export default function UpdateAlbum() {
     useEffect(() => {
         const reqAlbum = async () => {
             try {
-                const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${id}`, {
+                const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${albumId}`, {
                     headers: {
                         Accept: 'application/json',
                         Authorization: `Bearer ${token}`
@@ -151,7 +151,7 @@ export default function UpdateAlbum() {
             }
         }
         reqAlbum()
-    }, [token, id])
+    }, [token, albumId])
 
     if (!album) {
         return <></>
@@ -169,7 +169,7 @@ export default function UpdateAlbum() {
             const coverPic = JSON.stringify({
                 'base64_cover_pic': base64_cover_pic
             })
-            const url = `http://127.0.0.1:8000/api/v2/albums/${id}/update-cover-pic`
+            const url = `http://127.0.0.1:8000/api/v2/albums/${albumId}/update-cover-pic`
             const options = {
                 method: 'PUT',
                 headers: {
@@ -204,7 +204,7 @@ export default function UpdateAlbum() {
             const [day, month, year] =  newReleaseDate.split('/')
             releaseDateFormated = `${year}-${month}-${day}`
         }
-        const url = `http://127.0.0.1:8000/api/v2/albums/${id}`
+        const url = `http://127.0.0.1:8000/api/v2/albums/${albumId}`
         const data = JSON.stringify({
             title: newTitle ? newTitle : album.title,
             release_date: releaseDateFormated
@@ -222,12 +222,13 @@ export default function UpdateAlbum() {
             try {
                 const res = await fetch(url, options)
                 if (!res.ok) {
-                    return alert(`Falha ao atualizar os dados da conta: ${res}`)
+                    return alert(`Falha ao atualizar os dados do álbum: ${res}`)
                 }
-                navigate(`/album/edit-tracks/${album.id}`)
+                // alert('As alterações foram salvas.')
+                navigate(`/album/${album.id}/edit-tracks`)
             }
             catch (error) {
-                console.error(`Falha ao atualizar os dados da conta: ${error}`)
+                console.error(`Falha ao atualizar os dados do álbum: ${error}`)
             }
         }
         updateAlbum()

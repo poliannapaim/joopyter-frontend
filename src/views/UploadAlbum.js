@@ -164,12 +164,11 @@ export default function UploadAlbum() {
             },
             body: data
         }
-        console.log(data)
         const uploadAlbum = async () => {
             try {
                 const res = await fetch(url, options)
                 if (!res.ok) {
-                    return alert(`Falha criar novo álbum: ${res}`)
+                    return alert(`Falha ao criar novo álbum: ${res}`)
                 }
                 alert('O novo álbum foi criado.')
                 setCoverPic(null)
@@ -177,7 +176,7 @@ export default function UploadAlbum() {
                 setReleaseDate('')
             }
             catch (error) {
-                console.error(`Falha criar novo álbum: ${error}`)
+                console.error(`Erro ao criar novo álbum: ${error}`)
             }
         }
         uploadAlbum()
