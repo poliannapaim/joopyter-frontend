@@ -10,6 +10,7 @@ import UpdateAlbum from './views/UpdateAlbum'
 import UploadAlbum from './views/UploadAlbum'
 import UpdateTracks from './views/UpdateTracks'
 import UploadTracks from './views/UploadTracks'
+import Security from './views/Security'
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('auth_token')
@@ -54,6 +55,11 @@ function App() {
           <Route path='/account' element={
             <ProtectedRoute>
               <Account/>
+            </ProtectedRoute>
+          }/>
+          <Route path='/security' element={
+            <ProtectedRoute>
+              <Security/>
             </ProtectedRoute>
           }/>
           <Route path='/album/:albumId' element={

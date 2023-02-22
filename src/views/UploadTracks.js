@@ -118,7 +118,7 @@ export default function UploadTracks() {
     const [token] = useState(localStorage.getItem('auth_token'))
     let { albumId } = useParams()
     const [album, setAlbum] = useState(null)
-    const [formInputs, setFormInputs] = useState([{number: '', title : ''}])
+    const [formInputs, setFormInputs] = useState([{number: '', title: ''}])
     const [entrou, setEntrou] = useState(0)
     const navigate = useNavigate()
 

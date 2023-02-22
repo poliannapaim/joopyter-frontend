@@ -98,6 +98,7 @@ const DropDownLinks = styled.ul`
     flex-direction: column;
     align-items: center;
     gap: 0.5vw;
+    text-align: center;
 `;
 
 export default function NavBar() {
@@ -163,6 +164,7 @@ export default function NavBar() {
                         <DropDownName>{user?.name.split(" ")[0]}</DropDownName>
                         <Divider/>
                         <Link to='/account' className='auth-link'>atualizar conta</Link>   
+                        <Link to='/security' className='auth-link'>segurança</Link>   
                         <Link to='/upload-album' className='auth-link'>registrar álbum</Link>
                         <button type='button' className='button-logout' onClick={handleLogout}>sair</button>
                     </DropDownLinks>

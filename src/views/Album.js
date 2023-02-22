@@ -88,7 +88,8 @@ const Button = styled.button`
     background-color: #1C1917;
     color: #DC2626;
     font-size: 1.2rem;
-    margin-left: 0.5vw;
+    padding: 0;
+    margin-left: 1vw;
     cursor: pointer;
     border: 0;
 `;
@@ -100,7 +101,7 @@ const Tracks = styled.table`
 `;
 
 const TrackHead = styled.th`
-    color: #E7E5E4;
+    color: #FED7AA;
     font-family: 'Poppins', sans-serif;
     font-size: 1.2rem;
     font-weight: 700;
@@ -182,7 +183,7 @@ export default function Album() {
     const [year, month, day] =  album.release_date.split('-')
     const formatedReleaseDate = `${day} · ${month} · ${year}`
 
-    const listTracks = tracks.length ? tracks.map(tr => (
+    const listTracks = tracks.length ? 
         <Tracks>     
             <thead>
                 <tr>
@@ -190,22 +191,32 @@ export default function Album() {
                     <TrackHead>título</TrackHead>
                 </tr>
             </thead>
-            <tbody>
-                <tr key={tr.id}>
-                    <TrackData>{tr.number}</TrackData>
-                    <TrackData>{tr.title}</TrackData>
-                </tr>
-            </tbody>
+            {tracks.map(tr => (
+                <tbody key={tr.id}>
+                    <tr>
+                        <TrackData>{tr.number}</TrackData>
+                        <TrackData>{tr.title}</TrackData>
+                    </tr>
+                </tbody>
+            ))} 
         </Tracks>
-    )) : (
+    : (
         <Tracks>
-            <Message>Você ainda não possui músicas neste álbum. <StyledLink to={`/album/${album.id}/upload-tracks`}>Adicione!</StyledLink></Message>
+            <thead>
+                <tr>
+                    <th>
+                        <Message>
+                            Você ainda não possui músicas neste álbum. <StyledLink to={`/album/${album.id}/upload-tracks`}>Adicione!</StyledLink>
+                        </Message>
+                    </th>
+                </tr>
+            </thead>
         </Tracks>
     )
 
     const handleAlbumDelete = (e) => {
         e.preventDefault()
-        if (window.confirm('você realmente deseja deletar o álbum?') === true) {
+        if (window.confirm('Você realmente deseja deletar o álbum?') === true) {
             const url = `http://127.0.0.1:8000/api/v2/albums/${album.id}`
             const options = {
                 method: 'DELETE',

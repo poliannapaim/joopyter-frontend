@@ -120,19 +120,6 @@ const Button = styled.button`
     }
 `;
 
-const ButtonBack = styled(Button)`
-    margin-right: 2vw;
-    background-color: #FED7AA;
-    color: #EA580C;
-    vertical-align: top;
-
-    &:hover {
-    background-color: #EA580C;
-    color: #FED7AA;
-    transition-duration: 500ms;
-    }
-`;
-
 const RemoveButton = styled(FaRegTrashAlt)`
     color: #DC2626;
     font-size: 1.2rem;
@@ -147,10 +134,7 @@ export default function UpdateTracks() {
     const [token] = useState(localStorage.getItem('auth_token'))
     const [tracks, setTracks] = useState(null)
     const [albumInfo, setAlbumInfo] = useState(null)
-    const [newNumber, setNewNumber] = useState([])
-    const [newTitle, setNewTitle] = useState([])
     const navigate = useNavigate()
-
 
     useEffect(() => {
         const reqAlbum = async () => {
@@ -180,51 +164,38 @@ export default function UpdateTracks() {
     
     const [year] =  albumInfo.release_date.split('-')
 
-    const updateNumberChange = id => (e) => {
-        let numberArr = []
-        numberArr[id] = e.target.value
-        console.log(id)
-        console.log(e.target.value)
-        setNewNumber(numberArr)
-    }
-
-    const updateTitleChange = id => (e) => {
-        let titleArr = []
-        titleArr[id] = e.target.value
-        console.log(id)
-        console.log(e.target.value)
-        setNewTitle(titleArr)
+    const handleChange = (e, i) => {
+        let newInput = [...tracks]
+        newInput[i][e.target.name] = e.target.value
+        setTracks(newInput)
     }
 
     const handleTracksUpdate = (e) => {
         e.preventDefault()
-        // const url = `http://127.0.0.1:8000/api/v2/albums/${albumId}`
-        // const data = JSON.stringify({
-        //     number: newNumber ? newNumber : album.title,
-        //     title: newTitle ? newTitle : album.title,
-        // })
-        // const options = {
-        //     method: 'PUT',
-        //     headers: {
-        //         Accept: 'application/json',
-        //         'Content-Type': 'application/json',
-        //         Authorization: `Bearer ${token}`
-        //     },
-        //     body: data
-        // }
-        // const updateTrack = async () => {
-        //     try {
-        //         const res = await fetch(url, options)
-        //         if (!res.ok) {
-        //             return alert('Falha ao atualizar dados da conta.', res)
-        //         }
-        //         alert('As atualizações foram salvas.')
-        //     }
-        //     catch (err) {
-        //         console.error('error', err)
-        //     }
-        // }
-        // updateTrack()
+        const url = `http://127.0.0.1:8000/api/v2/albums/${albumId}/tracks`
+        const options = {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(tracks)
+        }
+        const updateTracks = async () => {
+            try {
+                const res = await fetch(url, options)
+                if (!res.ok) {
+                    return alert(`Falha ao atualizar as músicas do álbum: ${res}`)
+                }
+                alert('As músicas foram atualizadas.')
+                navigate(0)
+            }
+            catch (error) {
+                console.error(`Erro ao atualizar as músicas do álbum: ${error}`)
+            }
+        }
+        updateTracks()
     }
 
     const handleTrackDelete = (e, id) => {
@@ -258,32 +229,29 @@ export default function UpdateTracks() {
 
     const listTracks = tracks.length ? 
         <FormTracksUpdate onSubmit={handleTracksUpdate}>
-            { tracks.map((tr) => (
-                <Tracks key={tr.id}>
+            {tracks.map((el, i) => (
+                <Tracks key={i}>
                     <InputNumber
                         type='number'
                         name='number'
-                        placeholder={tr.number}
-                        value={newNumber[tr.id] || tr.number}
-                        onChange={updateNumberChange(tr.id)}/>
+                        placeholder={el.number}
+                        value={el.number}
+                        onChange={(e) => handleChange(e, i)}/>
                     <Input
                         type='text'
                         name='title'
-                        placeholder={tr.title}
-                        value={newTitle[tr.id] || tr.title}
-                        onChange={updateTitleChange(tr.id)}/>
-                    <RemoveButton onClick={(e) => handleTrackDelete(e, tr.id)} title={'Deletar a música.'}/>
+                        placeholder={el.title}
+                        value={el.title}
+                        onChange={(e) => handleChange(e, i)}/>
+                    <RemoveButton onClick={(e) => handleTrackDelete(e, el.id)} title={'Deletar a música.'}/>
                 </Tracks>   
             ))}  
-            <div>
-                <ButtonBack type='submit'>{'< voltar'}</ButtonBack>
-                <Button type='submit'>salvar</Button>
-            </div>
+            <Button type='submit'>salvar</Button>
         </FormTracksUpdate>
     : (
         <Message>Você ainda não possui músicas neste álbum. <StyledLink to='/update-tracks'>Adicione!</StyledLink></Message>
     )
-
+    
     const getShapeBottom = tracks.lenght ? (
         <ShapeBottom/>
     ) : ( <ShapeBottomAbsolute/> )
@@ -294,7 +262,7 @@ export default function UpdateTracks() {
 
             <Container>
                 <H3>editar as músicas</H3>
-                <AlbumInfo>álbum selecionado: {albumInfo.title} ({year})</AlbumInfo>
+                <AlbumInfo>álbum: {albumInfo.title} ({year})</AlbumInfo>
                 <Data>
                     {listTracks}
                 </Data>

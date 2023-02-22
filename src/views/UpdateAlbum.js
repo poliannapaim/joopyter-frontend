@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 import InputMask from 'react-input-mask'
 import ShapeBottomAbsolute from '../components/shapeBottomAbsolute'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 
 const Main = styled.main`
     width: 100vw;
@@ -13,8 +13,11 @@ const Main = styled.main`
 `;
 
 const Container = styled.div`
+    width: fit-content;
     padding: 1vw 5vw;
     margin-top: 3vw;
+    display: flex;
+    flex-direction: column;
 `;
 
 const H3 = styled.h3`
@@ -121,6 +124,19 @@ const Button = styled.button`
     }
 `;
 
+const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: #FED7AA;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    align-self: flex-end;
+    margin-top: 3vw;
+
+    &:hover {
+        text-decoration: underline;
+    }
+`;
 export default function UpdateAlbum() {
     useDocumentTitle('editar álbum')
     
@@ -130,7 +146,6 @@ export default function UpdateAlbum() {
     const [newCoverPic, setNewCoverPic] = useState(null)
     const [newTitle, setNewTitle] = useState('')
     const [newReleaseDate, setNewReleaseDate] = useState('')
-    const navigate = useNavigate()
 
     useEffect(() => {
         const reqAlbum = async () => {
@@ -224,8 +239,7 @@ export default function UpdateAlbum() {
                 if (!res.ok) {
                     return alert(`Falha ao atualizar os dados do álbum: ${res}`)
                 }
-                // alert('As alterações foram salvas.')
-                navigate(`/album/${album.id}/edit-tracks`)
+                alert('As alterações foram salvas.')
             }
             catch (error) {
                 console.error(`Falha ao atualizar os dados do álbum: ${error}`)
@@ -262,9 +276,10 @@ export default function UpdateAlbum() {
                             placeholder={releaseDate}
                             value={newReleaseDate || releaseDate}
                             onChange={(e) => setNewReleaseDate(e.target.value)}/>
-                        <Button type='submit' title='Salvar as alterações e editar as músicas.'>{'salvar & seguir'}</Button>
+                        <Button type='submit' title='Salvar as alterações e editar as músicas.'>{'salvar'}</Button>
                     </FormAlbumUpdate>
                 </Data>
+                <StyledLink to={`/album/${album.id}/edit-tracks`}>editar músicas</StyledLink>
             </Container>
             <ShapeBottomAbsolute/>
         </Main>

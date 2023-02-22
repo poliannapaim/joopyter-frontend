@@ -175,7 +175,7 @@ export default function Account() {
     }, [token])
 
     if (!user) {
-        return <h1>Por favor, faça o login para acessar a conta.</h1>
+        return <></>
     }
 
     const [year, month, day] =  user.dob.split('-')
