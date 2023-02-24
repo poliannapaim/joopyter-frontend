@@ -3,7 +3,7 @@ import NavBar from '../components/navBar'
 import styled from 'styled-components'
 import ShapeBottomAbsolute from '../components/shapeBottomAbsolute'
 import { useEffect, useState } from 'react'
-import { FaRegEdit, FaRegTrashAlt } from 'react-icons/fa'
+import { IoCreateOutline, IoTrashOutline } from 'react-icons/io5'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
@@ -49,6 +49,10 @@ const Message = styled.h6`
 const StyledLink = styled(Link)`
     text-decoration: none;
     color: #FED7AA;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    align-self: flex-end;
 
     &:hover {
         text-decoration: underline;
@@ -76,9 +80,9 @@ const ReleaseDate = styled.p`
     line-height: normal;
 `;
 
-const EditButton = styled(FaRegEdit)`
+const EditButton = styled(IoCreateOutline)`
     color: #FED7AA;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     background-color: transparent;
 `;
 
@@ -87,7 +91,7 @@ const Button = styled.button`
     padding: 1vw 1.5vw;
     background-color: #1C1917;
     color: #DC2626;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     padding: 0;
     margin-left: 1vw;
     cursor: pointer;
@@ -243,6 +247,8 @@ export default function Album() {
         }
     }
 
+    const addTracks =  tracks.length ? <StyledLink to={`/album/${album.id}/upload-tracks`}>+ adicionar músicas</StyledLink> : <></>
+
     return (
         <Main>
             <NavBar/>
@@ -259,10 +265,11 @@ export default function Album() {
 
                         <div>
                             <Link to={`/album/${album.id}/edit`} title={'Editar o seu álbum.'}><EditButton/></Link>
-                            <Button type='button' onClick={handleAlbumDelete} title={'Deletar o seu álbum.'}><FaRegTrashAlt/></Button>
+                            <Button type='button' onClick={handleAlbumDelete} title={'Deletar o seu álbum.'}><IoTrashOutline/></Button>
                         </div>
                     </Info>
                     {listTracks}
+                    {addTracks}
                 </Data>
             </Container>
             <ShapeBottomAbsolute/>

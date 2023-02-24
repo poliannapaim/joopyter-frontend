@@ -129,34 +129,34 @@ export default function Security() {
 
     const handlePasswordUpdate = (e) => {
         e.preventDefault()
-    //     const url = 'http://127.0.0.1:8000/api/v2/change-password'
-    //     const data = JSON.stringify({
-    //         old_password,
-    //         password,
-    //         password_confirmation
-    //     })
-    //     const options = {
-    //         method: 'PUT',
-    //         headers: {
-    //             Accept: 'application/json',
-    //             'Content-Type': 'application/json',
-    //             Authorization: `Bearer ${token}`
-    //         },
-    //         body: data
-    //     }
-    //     const updatePassword = async () => {
-    //         try {
-    //             const res = await fetch(url, options)
-    //             if (!res.ok) {
-    //                 return alert('Falha ao alterar a senha.', res)
-    //             }
-    //             alert('A senha foi alterada.')
-    //         }
-    //         catch (error) {
-    //             console.error(`Erro ao alterar a senha: ${error}`)
-    //         }
-    //     }
-    //     updatePassword()
+        const url = 'http://127.0.0.1:8000/api/v2/account/update-password'
+        const data = JSON.stringify({
+            old_password: oldPassword,
+            password,
+            password_confirmation: passwordConfirmation
+        })
+        const options = {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: data
+        }
+        const updatePassword = async () => {
+            try {
+                const res = await fetch(url, options)
+                if (!res.ok) {
+                    return alert('Falha ao alterar a senha.', res)
+                }
+                alert('A senha foi alterada.')
+            }
+            catch (error) {
+                console.error(`Erro ao alterar a senha: ${error}`)
+            }
+        }
+        updatePassword()
     }
 
     const handleAccountDelete = (e) => {

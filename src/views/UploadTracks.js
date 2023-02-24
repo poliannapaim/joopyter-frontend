@@ -1,9 +1,11 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import NavBar from '../components/navBar'
+import ShapeBottom from '../components/shapeBottom'
 import ShapeBottomAbsolute from '../components/shapeBottomAbsolute'
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
-import { FaMinus, FaPlus } from 'react-icons/fa'
+import { IoRemoveOutline, IoAddOutline } from 'react-icons/io5'
+import useDocumentTitle from '../components/useDocumentTitle'
 
 const Main = styled.main`
     width: 100%;
@@ -57,7 +59,7 @@ const Tracks = styled.div`
     align-self: flex-start;
     
     gap: 2vw;
-`
+`;
 
 const InputNumber = styled.input`
     background-color: #1C1917;
@@ -100,29 +102,33 @@ const Button = styled.button`
     }
 `;
 
-const RemoveButton = styled(FaMinus)`
+const RemoveButton = styled(IoRemoveOutline)`
     color: #DC2626;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     background-color: transparent;
     cursor: pointer;
 `;
 
-const AddButton = styled(FaPlus)`
+const AddButton = styled(IoAddOutline)`
     color: #FED7AA;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     background-color: transparent;
     cursor: pointer;
 `;
 
 export default function UploadTracks() {
+    useDocumentTitle('adicionar músicas')
+
     const [token] = useState(localStorage.getItem('auth_token'))
     let { albumId } = useParams()
     const [album, setAlbum] = useState(null)
     const [formInputs, setFormInputs] = useState([{number: '', title: ''}])
-    const [entrou, setEntrou] = useState(0)
     const navigate = useNavigate()
 
     useEffect(() => {
+        if (!token) {
+            return
+        }
         const reqAlbum = async () => {
             try {
                 const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${albumId}`, {
@@ -159,7 +165,6 @@ export default function UploadTracks() {
         let newFormInputs = [...formInputs]
         newFormInputs.splice(i, 1)
         setFormInputs(newFormInputs)
-        setEntrou(entrou + 1)
     }
     
     const addInputs = () => {
@@ -194,13 +199,17 @@ export default function UploadTracks() {
         }
         uploadTracks()
     }
+    
+    const getShapeBottom = formInputs.length > 4 ? (
+        <ShapeBottom/>
+    ) : ( <ShapeBottomAbsolute/> )
 
     return (
         <Main>
             <NavBar/>
 
             <Container>
-                <H3>registrar as músicas do álbum</H3>
+                <H3>adicionar músicas</H3>
                 <AlbumInfo>{album.title} ({year})</AlbumInfo>
                 <Data>
                     <FormTracksUpdate onSubmit={handleTracksUpload}>
@@ -222,19 +231,17 @@ export default function UploadTracks() {
                                         value={el.title || ''}
                                         onChange={(e) => handleChange(i, e)}/>
                                 </div>
-                                <RemoveButton onClick={() => removeInputs(i)}/>
+                                {formInputs.length > 1 ? <RemoveButton onClick={() => removeInputs(i)}/> : null}
                                 
                                 { i !== formInputs.length-1 ? null : <AddButton onClick={() => addInputs()}/> }
                             </Tracks>
                                 
                         ))}
-                        
                         <Button type='submit'>salvar</Button>
                     </FormTracksUpdate>
                 </Data>
             </Container>
-            {/* {getShapeBottom} */}
-            <ShapeBottomAbsolute/>
+            {getShapeBottom}
         </Main>
     )
 }

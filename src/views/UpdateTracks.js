@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import ShapeBottomAbsolute from '../components/shapeBottomAbsolute'
 import { Link, useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
-import { FaRegTrashAlt } from 'react-icons/fa'
+import { IoTrashOutline } from 'react-icons/io5'
 
 const Main = styled.main`
     width: 100%;
@@ -102,9 +102,9 @@ const Input = styled(InputNumber)`
 `;
 
 const Button = styled.button`
-    width: 8vw;
+    width: auto;
+    padding: 1vw 1.5vw;
     background-color: #14B8A6;
-    padding: 0.8vw;
     cursor: pointer;
     border: 0;
     border-radius: 0.5vw;
@@ -120,9 +120,9 @@ const Button = styled.button`
     }
 `;
 
-const RemoveButton = styled(FaRegTrashAlt)`
+const RemoveButton = styled(IoTrashOutline)`
     color: #DC2626;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     background-color: transparent;
     cursor: pointer;
 `;
@@ -137,6 +137,9 @@ export default function UpdateTracks() {
     const navigate = useNavigate()
 
     useEffect(() => {
+        if (!token) {
+            return
+        }
         const reqAlbum = async () => {
             try {
                 const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${albumId}`, {

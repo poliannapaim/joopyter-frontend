@@ -1,7 +1,6 @@
 import './App.css'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Welcome from './views/Welcome'
-import ForgotPassword from './views/ForgotPassword'
 import Register from './views/Register'
 import Dashboard from './views/Dashboard'
 import Account from './views/Account'
@@ -11,6 +10,7 @@ import UploadAlbum from './views/UploadAlbum'
 import UpdateTracks from './views/UpdateTracks'
 import UploadTracks from './views/UploadTracks'
 import Security from './views/Security'
+import TrashedAlbums from './views/TrashedAlbums'
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('auth_token')
@@ -37,11 +37,6 @@ function App() {
               <Welcome/>
             </ForcePublicRoute>
           }/>
-          <Route path='/forgot-password' element={   
-            <ForcePublicRoute>
-              <ForgotPassword/>
-            </ForcePublicRoute>
-          }/>
           <Route path='/register' element={ 
             <ForcePublicRoute>
               <Register/>
@@ -62,6 +57,11 @@ function App() {
               <Security/>
             </ProtectedRoute>
           }/>
+          <Route path='/upload-album' element={ 
+            <ProtectedRoute>
+              <UploadAlbum/>
+            </ProtectedRoute>
+          }/>
           <Route path='/album/:albumId' element={
             <ProtectedRoute>
               <Album/>
@@ -72,9 +72,9 @@ function App() {
               <UpdateAlbum/>
             </ProtectedRoute>
           }/>
-          <Route path='/upload-album' element={ 
+          <Route path='/album/:albumId/upload-tracks' element={
             <ProtectedRoute>
-              <UploadAlbum/>
+              <UploadTracks/>
             </ProtectedRoute>
           }/>
           <Route path='/album/:albumId/edit-tracks' element={
@@ -82,12 +82,11 @@ function App() {
               <UpdateTracks/>
             </ProtectedRoute>
           }/>
-          <Route path='/album/:albumId/upload-tracks' element={
+          <Route path='/trashed-albums' element={
             <ProtectedRoute>
-              <UploadTracks/>
+              <TrashedAlbums/>
             </ProtectedRoute>
           }/>
-          {/* <Route path='/album/:id' element={ <UploadAlbum /> }/> */}
       </Routes>
     </>
   );

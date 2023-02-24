@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import logo from './images/logo.svg'
 import profile from './images/profile.svg'
 import { useNavigate } from 'react-router-dom'
-
+// react-icons/io5
 const Nav = styled.nav`
     width: 100%;
     height: 4vw;
@@ -163,10 +163,16 @@ export default function NavBar() {
                     <DropDownLinks>
                         <DropDownName>{user?.name.split(" ")[0]}</DropDownName>
                         <Divider/>
-                        <Link to='/account' className='auth-link'>atualizar conta</Link>   
-                        <Link to='/security' className='auth-link'>segurança</Link>   
+                        <Link to='/account' className='auth-link'>atualizar conta</Link>
+                        {/* IoPersonOutline    */}
+                        <Link to='/security' className='auth-link'>segurança</Link>
+                        {/* IoLockClosedOutline    */}
                         <Link to='/upload-album' className='auth-link'>registrar álbum</Link>
+                        {/* IoMusicalNotesOutline */}
+                        <Link to='/trashed-albums' className='auth-link'>álbuns deletados</Link>
+                        {/* IoTrashOutline */}
                         <button type='button' className='button-logout' onClick={handleLogout}>sair</button>
+                        {/* IoLogOutOutline */}
                     </DropDownLinks>
                 )}
             </DropDown>

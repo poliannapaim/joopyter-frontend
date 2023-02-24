@@ -3,7 +3,6 @@ import { keyframes } from 'styled-components'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-
 const Album = styled.div`
     margin-bottom: 5vw;
 `;
@@ -19,6 +18,7 @@ const Albums = styled.div`
     display: flex;
     flex-direction: row;
     gap: 3vw;
+  flex-wrap: wrap;
 `;
 
 const AlbumInfo = styled(Link)`

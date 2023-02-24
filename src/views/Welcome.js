@@ -15,23 +15,11 @@ export default function Welcome() {
             </div>
 
             <main className='main'>
-                <nav className='about'>
-                    <ul>
-                        <li>
-                            <Link to='/about' className='nav-link'>what is joopyter?</Link>
-                        </li>
-                    </ul>
-                </nav>
-	
-
                 <div className="login">
                     <Form/>
                     
                     <div>
                         <ul className='auth-links'>
-                            <li>
-                                <Link to='/forgot-password' className='auth-link'>forgot your password?</Link>
-                            </li>
                             <li>
                                 <Link to='/register' className='auth-link'>new here? create an account</Link>
                             </li>

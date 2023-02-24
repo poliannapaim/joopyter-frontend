@@ -5,6 +5,7 @@ import ShapeBottomAbsolute from '../components/shapeBottomAbsolute'
 import { useState } from 'react'
 import InputMask from 'react-input-mask'
 import profile from '../components/images/profile.svg'
+import { useNavigate } from 'react-router-dom'
 
 const Main = styled.main`
     width: 100vw;
@@ -133,6 +134,7 @@ export default function UploadAlbum() {
     const [coverPic, setCoverPic] = useState(null)
     const [title, setTitle] = useState('')
     const [releaseDate, setReleaseDate] = useState('')
+    const navigate = useNavigate()
 
     function HandleCoverPic(e) {
         e.preventDefault()
@@ -167,13 +169,12 @@ export default function UploadAlbum() {
         const uploadAlbum = async () => {
             try {
                 const res = await fetch(url, options)
+                const json = await res.json()
                 if (!res.ok) {
                     return alert(`Falha ao criar novo álbum: ${res}`)
                 }
                 alert('O novo álbum foi criado.')
-                setCoverPic(null)
-                setTitle('')
-                setReleaseDate('')
+                navigate(`/album/${json.data['id']}/upload-tracks`)
             }
             catch (error) {
                 console.error(`Erro ao criar novo álbum: ${error}`)

@@ -137,6 +137,7 @@ const StyledLink = styled(Link)`
         text-decoration: underline;
     }
 `;
+
 export default function UpdateAlbum() {
     useDocumentTitle('editar álbum')
     
@@ -149,6 +150,9 @@ export default function UpdateAlbum() {
 
     useEffect(() => {
         const reqAlbum = async () => {
+            if (!token) {
+                return
+            }
             try {
                 const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${albumId}`, {
                     headers: {
