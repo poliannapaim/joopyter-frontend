@@ -4,7 +4,8 @@ import styled from 'styled-components'
 import logo from './images/logo.svg'
 import profile from './images/profile.svg'
 import { useNavigate } from 'react-router-dom'
-// react-icons/io5
+import { IoPersonOutline, IoLockClosedOutline, IoMusicalNotesOutline, IoTrashOutline, IoLogOutOutline } from 'react-icons/io5'
+
 const Nav = styled.nav`
     width: 100%;
     height: 4vw;
@@ -76,6 +77,7 @@ const DropDownName = styled.h5`
     font-weight: 700;
     text-transform: uppercase;
     margin: 0;
+    align-self: center;
 `;
 
 const Divider = styled.hr`
@@ -86,7 +88,7 @@ const Divider = styled.hr`
 
 const DropDownLinks = styled.ul`
     position: absolute;
-    width: 10vw;
+    width: 12vw;
     margin-top: 3vw;
     margin-right: -5px;
     padding: 1vw;
@@ -96,8 +98,8 @@ const DropDownLinks = styled.ul`
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0.5vw;
+    align-items: stretch;
+    gap: 0.8vw;
     text-align: center;
 `;
 
@@ -163,16 +165,26 @@ export default function NavBar() {
                     <DropDownLinks>
                         <DropDownName>{user?.name.split(" ")[0]}</DropDownName>
                         <Divider/>
-                        <Link to='/account' className='auth-link'>atualizar conta</Link>
-                        {/* IoPersonOutline    */}
-                        <Link to='/security' className='auth-link'>segurança</Link>
-                        {/* IoLockClosedOutline    */}
-                        <Link to='/upload-album' className='auth-link'>registrar álbum</Link>
-                        {/* IoMusicalNotesOutline */}
-                        <Link to='/trashed-albums' className='auth-link'>álbuns deletados</Link>
-                        {/* IoTrashOutline */}
-                        <button type='button' className='button-logout' onClick={handleLogout}>sair</button>
-                        {/* IoLogOutOutline */}
+                        <Link to='/account' className='auth-link'>
+                            <IoPersonOutline/>
+                            atualizar conta
+                        </Link>
+                        <Link to='/security' className='auth-link'>
+                            <IoLockClosedOutline/>
+                            segurança
+                        </Link>
+                        <Link to='/upload-album' className='auth-link'>
+                            <IoMusicalNotesOutline/>
+                            registrar álbum
+                        </Link>
+                        <Link to='/trashed-albums' className='auth-link'>
+                            <IoTrashOutline/>
+                            álbuns deletados
+                        </Link>
+                        <button type='button' className='button-logout' onClick={handleLogout}>
+                            <IoLogOutOutline/>
+                            sair
+                        </button>
                     </DropDownLinks>
                 )}
             </DropDown>
