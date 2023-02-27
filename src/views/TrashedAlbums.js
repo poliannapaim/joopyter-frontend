@@ -120,6 +120,9 @@ export default function TrashedAlbums() {
     }
 
     const formatDeletedAt = (deletedAt) => {
+        if (!deletedAt) {
+            return '__/__/___'
+        }
         const newFormat = deletedAt.substr(0, 10)
         const [year, month, day] = newFormat.split('-')
         return `${day}/${month}/${year}`
@@ -177,6 +180,19 @@ export default function TrashedAlbums() {
         }
     }
 
+    const getTrashedAlbums = trashedAlbums.length ?
+        trashedAlbums.map(ta => (
+            <tbody key={ta.id}>
+                <tr>
+                    <TAData>{ta.title}</TAData>
+                    <TAData>{formatReleaseDate(ta.release_date)}</TAData>
+                    <TAData>{formatDeletedAt(ta.deleted_at)}</TAData>
+                    <TAData><ButtonRestore onClick={(e) => handleRestore(e, ta.id)}>restaurar</ButtonRestore></TAData>
+                    <TAData><ButtonRemove onClick={(e) => handleRemove(e, ta.id)}>remover</ButtonRemove></TAData>
+                </tr>
+            </tbody>
+        )) : <>vc nao tem albuns</>
+
     const getShapeBottom = trashedAlbums.length > 6 ? <ShapeBottom/> : <ShapeBottomAbsolute/>
 
     return (
@@ -195,17 +211,7 @@ export default function TrashedAlbums() {
                             <TAHead></TAHead>
                         </tr>
                     </thead>
-                    {trashedAlbums.map(ta => (
-                        <tbody key={ta.id}>
-                            <tr>
-                                <TAData>{ta.title}</TAData>
-                                <TAData>{formatReleaseDate(ta.release_date)}</TAData>
-                                <TAData>{formatDeletedAt(ta.deleted_at)}</TAData>
-                                <TAData><ButtonRestore onClick={(e) => handleRestore(e, ta.id)}>restaurar</ButtonRestore></TAData>
-                                <TAData><ButtonRemove onClick={(e) => handleRemove(e, ta.id)}>remover</ButtonRemove></TAData>
-                            </tr>
-                        </tbody>
-                    ))} 
+                    {getTrashedAlbums}
                 </TATable>
             
             </Container>

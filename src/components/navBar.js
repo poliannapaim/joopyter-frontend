@@ -50,24 +50,12 @@ const DropDownButton = styled.button`
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    border: 1px solid #292524;
-`;
-
-const DropDownImg = styled.img`
-    width: 2.5vw;
-    height: 2.5vw;
-    border-radius: 50%;
+    background-size: cover;
+    border: 0;
 
     &:hover {
-        border: 5px solid #292524;
         cursor: pointer;
     }
-
-    border: ${
-        props => props.active ?
-        `5px solid #292524` :
-        'none'
-    };
 `;
 
 const DropDownName = styled.h5`
@@ -99,8 +87,7 @@ const DropDownLinks = styled.ul`
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 0.8vw;
-    text-align: center;
+    gap: 0.8vw;    
 `;
 
 export default function NavBar() {
@@ -154,12 +141,7 @@ export default function NavBar() {
             </StyledLink>
 
             <DropDown>
-                <DropDownButton onClick={getDropdownLinks}>
-                    <DropDownImg src={user?.profile_pic ? (
-                        `http://127.0.0.1:8000/storage/${user.profile_pic}`
-                        ) : (profile)}
-                        active={isOpen}/>
-                </DropDownButton>
+                <DropDownButton onClick={getDropdownLinks} style={{backgroundImage: user?.profile_pic ? `url(http://127.0.0.1:8000/storage/${user.profile_pic})` : `url(${profile})`}}/>
 
                 {isOpen && (
                     <DropDownLinks>

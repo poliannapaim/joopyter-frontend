@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 import InputMask from 'react-input-mask'
 import ShapeBottomAbsolute from '../components/shapeBottomAbsolute'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 
 const Main = styled.main`
     width: 100vw;
@@ -147,6 +147,7 @@ export default function UpdateAlbum() {
     const [newCoverPic, setNewCoverPic] = useState(null)
     const [newTitle, setNewTitle] = useState('')
     const [newReleaseDate, setNewReleaseDate] = useState('')
+    const navigate = useNavigate()
 
     useEffect(() => {
         const reqAlbum = async () => {
@@ -162,6 +163,9 @@ export default function UpdateAlbum() {
                 })
                 const json = await res.json()
                 if (!res.ok) {
+                    if (res.status === 403) {
+                        return navigate('/')
+                    }
                     return alert(`Falha ao buscar o álbum: ${res}`)
                 }
                 setAlbum(json.data.album)
@@ -170,7 +174,7 @@ export default function UpdateAlbum() {
             }
         }
         reqAlbum()
-    }, [token, albumId])
+    }, [token, albumId, navigate])
 
     if (!album) {
         return <></>
@@ -274,8 +278,8 @@ export default function UpdateAlbum() {
                             value={newTitle || album.title}
                             onChange={(e) => setNewTitle(e.target.value)}/>
                         <InputReleaseDate
-                            type='dob'
-                            name='dob'
+                            type='text'
+                            name='release_date'
                             mask='99/99/9999'
                             placeholder={releaseDate}
                             value={newReleaseDate || releaseDate}

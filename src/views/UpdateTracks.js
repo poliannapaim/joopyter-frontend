@@ -150,6 +150,9 @@ export default function UpdateTracks() {
                 })
                 const json = await res.json()
                 if (!res.ok) {
+                    if (res.status === 403) {
+                        return navigate('/')
+                    }
                     return alert(`Falha ao buscar o álbum: ${res}`)
                 }
                 setTracks(json.data.tracks)
@@ -159,7 +162,7 @@ export default function UpdateTracks() {
             }
         }
         reqAlbum()
-    }, [token, albumId])
+    }, [token, albumId, navigate])
 
     if (!tracks) {
         return <></>

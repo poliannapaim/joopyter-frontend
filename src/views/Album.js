@@ -159,8 +159,12 @@ export default function Album() {
                 })
                 const json = await res.json()
                 if (!res.ok) {
+                    if (res.status === 403) {
+                        return navigate('/')
+                    }
                     return alert('Falha ao buscar os dados do álbum.')
                 }
+                console.log(json)
                 setAlbum(json.data.album)
                 setTracks(json.data.tracks)
             } catch (error) {
@@ -169,7 +173,7 @@ export default function Album() {
             }
         }
         reqAlbum()
-    }, [token, id, setError, tries])
+    }, [token, id, setError, tries, navigate])
 
     if (error) {
         return (

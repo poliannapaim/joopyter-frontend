@@ -139,6 +139,9 @@ export default function UploadTracks() {
                 })
                 const json = await res.json()
                 if (!res.ok) {
+                    if (res.status === 403) {
+                        return navigate('/')
+                    }
                     return alert(`Falha ao buscar o álbum: ${res}`)
                 }
                 setAlbum(json.data.album)
@@ -147,7 +150,7 @@ export default function UploadTracks() {
             }
         }
         reqAlbum()
-    }, [token, albumId])
+    }, [token, albumId, navigate])
 
     if (!album) {
         return <></>

@@ -21,15 +21,15 @@ export default function Welcome() {
                     <div>
                         <ul className='auth-links'>
                             <li>
-                                <Link to='/register' className='auth-link'>new here? create an account</Link>
+                                <Link to='/register' className='auth-link'>crie uma conta</Link>
                             </li>
                         </ul>
                     </div>
                 </div>
 
                 <div className='motif'>
-                    <h4>a space for storytellers to be true to their soul.</h4>
-                    <h3>share your art.</h3>
+                    <h4>um espaço para contadores de histórias.</h4>
+                    <h3>compartilhe a sua arte.</h3>
                 </div>
             </main>
         </div>

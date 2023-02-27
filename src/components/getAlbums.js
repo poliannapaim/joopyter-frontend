@@ -56,6 +56,7 @@ const Title = styled.h6`
 `;
 
 const Message = styled(Title)`
+    width: auto;
     color: #EA580C;
 
     &:hover {
@@ -131,6 +132,19 @@ const ReleaseDateSkeleton = styled.p`
     margin: 0;
     margin-top: 0.5vw;
     animation: ${skeletonLoading} 1s linear infinite alternate;
+`;
+
+const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: #FED7AA;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    align-self: flex-end;
+
+    &:hover {
+        text-decoration: underline;
+    }
 `;
 
 export default function GetAlbums() {
@@ -218,7 +232,7 @@ export default function GetAlbums() {
             <ReleaseDate>{formatReleaseDate(al.album.release_date)}</ReleaseDate>
         </AlbumInfo>
     ) : (
-        <Message>Você ainda não possui álbuns.</Message>
+        <Message>Você ainda não possui álbuns. <StyledLink to={`/upload-album`}>Adicione!</StyledLink></Message>
     )
 
     return (

@@ -47,6 +47,7 @@ const ProfilePic = styled.img`
     width: 8vw;
     height: 8vw;
     border-radius: 50%;
+    object-fit: cover;
 `;
 
 const InputFile = styled.input`
@@ -177,9 +178,12 @@ export default function Account() {
     if (!user) {
         return <></>
     }
-
-    const [year, month, day] =  user.dob.split('-')
-    const dob = `${day}/${month}/${year}`
+    
+    let dob = ''
+    if (user.dob) {
+        const [year, month, day] =  user.dob.split('-')
+        dob = `${day}/${month}/${year}`
+    }
 
     function HandleProfilePic(e) {
         e.preventDefault()
@@ -266,10 +270,10 @@ export default function Account() {
                     <FormProfilePic>
                         <ProfilePic
                             src={newProfilePic ?
-                                (`http://127.0.0.1:8000/storage/${newProfilePic}`) :
-                                ((`http://127.0.0.1:8000/storage/${user.profile_pic}` ?
-                                (`http://127.0.0.1:8000/storage/${user.profile_pic}`) :
-                                profile))}/>
+                                `http://127.0.0.1:8000/storage/${newProfilePic}` :
+                                (user.profile_pic ?
+                                `http://127.0.0.1:8000/storage/${user.profile_pic}` : profile
+                                )}/>
                         <InputFile type='file' name='profilePic' id='file' title='Editar foto de perfil.' accept='.jpeg, .png, .jpg' onChange={(e) => HandleProfilePic(e)}/>
                     </FormProfilePic>
                     <FormAccountUpdate onSubmit={handleAccountUpdate}>
@@ -289,8 +293,8 @@ export default function Account() {
                             type='dob'
                             name='dob'
                             mask='99/99/9999'
-                            placeholder={dob}
-                            value={newDob || dob}
+                            placeholder={dob ? dob : 'data de nascimento'}
+                            value={dob !== null ? (newDob || dob) : null}
                             onChange={(e) => setNewDob(e.target.value)}/>
                         <InputBio
                             type='bio'
