@@ -203,9 +203,7 @@ export default function UploadTracks() {
         uploadTracks()
     }
     
-    const getShapeBottom = formInputs.length > 4 ? (
-        <ShapeBottom/>
-    ) : ( <ShapeBottomAbsolute/> )
+    const getShapeBottom = formInputs.length > 4 ? <ShapeBottom/> : <ShapeBottomAbsolute/>
 
     return (
         <Main>
