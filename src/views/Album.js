@@ -1,6 +1,7 @@
 import useDocumentTitle from '../components/useDocumentTitle'
 import NavBar from '../components/navBar'
 import styled from 'styled-components'
+import ShapeBottom from '../components/shapeBottom'
 import ShapeBottomAbsolute from '../components/shapeBottomAbsolute'
 import { useEffect, useState } from 'react'
 import { IoCreateOutline, IoTrashOutline } from 'react-icons/io5'
@@ -8,7 +9,7 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
 const Main = styled.main`
-    width: 100vw;
+    width: 100%;
     display: flex;
     flex-direction: column;
 `;
@@ -253,6 +254,8 @@ export default function Album() {
 
     const addTracks =  tracks.length ? <StyledLink to={`/album/${album.id}/upload-tracks`}>+ adicionar músicas</StyledLink> : <></>
 
+    const getShapeBottom = tracks.lenght > 7 ? <ShapeBottomAbsolute/> : <ShapeBottom/>
+
     return (
         <Main>
             <NavBar/>
@@ -276,7 +279,7 @@ export default function Album() {
                     {addTracks}
                 </Data>
             </Container>
-            <ShapeBottomAbsolute/>
+            {getShapeBottom}
         </Main>
     )
 }

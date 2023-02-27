@@ -258,9 +258,7 @@ export default function UpdateTracks() {
         <Message>Você ainda não possui músicas neste álbum. <StyledLink to='/update-tracks'>Adicione!</StyledLink></Message>
     )
     
-    const getShapeBottom = tracks.lenght ? (
-        <ShapeBottom/>
-    ) : ( <ShapeBottomAbsolute/> )
+    const getShapeBottom = tracks.lenght > 4 ? <ShapeBottomAbsolute/> : <ShapeBottom/>
 
     return (
         <Main>

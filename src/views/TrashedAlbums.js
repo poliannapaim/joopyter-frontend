@@ -191,7 +191,7 @@ export default function TrashedAlbums() {
                     <TAData><ButtonRemove onClick={(e) => handleRemove(e, ta.id)}>remover</ButtonRemove></TAData>
                 </tr>
             </tbody>
-        )) : <>vc nao tem albuns</>
+        )) : <></>
 
     const getShapeBottom = trashedAlbums.length > 6 ? <ShapeBottom/> : <ShapeBottomAbsolute/>
 
