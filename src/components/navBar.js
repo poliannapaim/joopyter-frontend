@@ -105,7 +105,7 @@ export default function NavBar() {
         }
         const makeRequest = async () => {
             try {
-                const res = await fetch('http://127.0.0.1:8000/api/v2/user', {
+                const res = await fetch(`${process.env.REACT_APP_API_URL}/user`, {
                     headers: {
                         Accept: 'application/json',
                         Authorization: `Bearer ${token}`
@@ -141,7 +141,7 @@ export default function NavBar() {
             </StyledLink>
 
             <DropDown>
-                <DropDownButton onClick={getDropdownLinks} style={{backgroundImage: user?.profile_pic ? `url(http://127.0.0.1:8000/storage/${user.profile_pic})` : `url(${profile})`}}/>
+                <DropDownButton onClick={getDropdownLinks} style={{backgroundImage: user?.profile_pic ? `url(${process.env.REACT_APP_STORAGE_URL}/${user.profile_pic})` : `url(${profile})`}}/>
 
                 {isOpen && (
                     <DropDownLinks>

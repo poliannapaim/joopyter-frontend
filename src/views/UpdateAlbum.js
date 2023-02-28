@@ -155,7 +155,7 @@ export default function UpdateAlbum() {
                 return
             }
             try {
-                const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${albumId}`, {
+                const res = await fetch(`${process.env.REACT_APP_API_URL}/albums/${albumId}`, {
                     headers: {
                         Accept: 'application/json',
                         Authorization: `Bearer ${token}`
@@ -192,7 +192,7 @@ export default function UpdateAlbum() {
             const coverPic = JSON.stringify({
                 'base64_cover_pic': base64_cover_pic
             })
-            const url = `http://127.0.0.1:8000/api/v2/albums/${albumId}/update-cover-pic`
+            const url = `${process.env.REACT_APP_API_URL}/albums/${albumId}/update-cover-pic`
             const options = {
                 method: 'PUT',
                 headers: {
@@ -227,7 +227,7 @@ export default function UpdateAlbum() {
             const [day, month, year] =  newReleaseDate.split('/')
             releaseDateFormated = `${year}-${month}-${day}`
         }
-        const url = `http://127.0.0.1:8000/api/v2/albums/${albumId}`
+        const url = `${process.env.REACT_APP_API_URL}/albums/${albumId}`
         const data = JSON.stringify({
             title: newTitle ? newTitle : album.title,
             release_date: releaseDateFormated
@@ -266,8 +266,8 @@ export default function UpdateAlbum() {
                     <FormCoverPic>
                         <CoverPic
                             src={newCoverPic ?
-                                (`http://127.0.0.1:8000/storage/${newCoverPic}`) :
-                                (`http://127.0.0.1:8000/storage/${album.cover_pic}`)}/>
+                                (`${process.env.REACT_APP_STORAGE_URL}/${newCoverPic}`) :
+                                (`${process.env.REACT_APP_STORAGE_URL}/${album.cover_pic}`)}/>
                         <InputFile type='file' name='coverPic' id='file' title='Editar capa do álbum.' accept='.jpeg, .png, .jpg' onChange={(e) => HandleCoverPic(e)}/>
                     </FormCoverPic>
                     <FormAlbumUpdate onSubmit={handleAlbumUpdate}>

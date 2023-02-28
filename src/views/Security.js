@@ -108,7 +108,7 @@ export default function Security() {
             return
         }
         const reqUser = async () => {
-            const res = await fetch('http://127.0.0.1:8000/api/v2/user', {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/user`, {
                 headers: {
                     Accept: 'application/json',
                     Authorization: `Bearer ${token}`
@@ -129,7 +129,7 @@ export default function Security() {
 
     const handlePasswordUpdate = (e) => {
         e.preventDefault()
-        const url = 'http://127.0.0.1:8000/api/v2/account/update-password'
+        const url = `${process.env.REACT_APP_API_URL}/account/update-password`
         const data = JSON.stringify({
             old_password: oldPassword,
             password,
@@ -162,7 +162,7 @@ export default function Security() {
     const handleAccountDelete = (e) => {
         e.preventDefault()
         if (window.confirm('Tem certeza que deseja excluir a sua conta?') === true) {
-            const url = `http://127.0.0.1:8000/api/v2/account/delete`
+            const url = `${process.env.REACT_APP_API_URL}/account/delete`
             const options = {
                 method: 'DELETE',
                 headers: {

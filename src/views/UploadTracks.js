@@ -131,7 +131,7 @@ export default function UploadTracks() {
         }
         const reqAlbum = async () => {
             try {
-                const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${albumId}`, {
+                const res = await fetch(`${process.env.REACT_APP_API_URL}/albums/${albumId}`, {
                     headers: {
                         Accept: 'application/json',
                         Authorization: `Bearer ${token}`
@@ -177,7 +177,7 @@ export default function UploadTracks() {
     const handleTracksUpload = (e) => {
         e.preventDefault()
         
-        const url = `http://127.0.0.1:8000/api/v2/albums/${albumId}/tracks`
+        const url = `${process.env.REACT_APP_API_URL}/albums/${albumId}/tracks`
         const options = {
             method: 'POST',
             headers: {

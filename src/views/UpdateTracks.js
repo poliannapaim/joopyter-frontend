@@ -142,7 +142,7 @@ export default function UpdateTracks() {
         }
         const reqAlbum = async () => {
             try {
-                const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${albumId}`, {
+                const res = await fetch(`${process.env.REACT_APP_API_URL}/albums/${albumId}`, {
                     headers: {
                         Accept: 'application/json',
                         Authorization: `Bearer ${token}`
@@ -178,7 +178,7 @@ export default function UpdateTracks() {
 
     const handleTracksUpdate = (e) => {
         e.preventDefault()
-        const url = `http://127.0.0.1:8000/api/v2/albums/${albumId}/tracks`
+        const url = `${process.env.REACT_APP_API_URL}/albums/${albumId}/tracks`
         const options = {
             method: 'PUT',
             headers: {
@@ -207,7 +207,7 @@ export default function UpdateTracks() {
     const handleTrackDelete = (e, id) => {
         e.preventDefault()
         if (window.confirm('Você realmente deseja deletar essa música?') === true) {
-            const url = `http://127.0.0.1:8000/api/v2/albums/${albumId}/tracks/${id}`
+            const url = `${process.env.REACT_APP_API_URL}/albums/${albumId}/tracks/${id}`
             const options = {
                 method: 'DELETE',
                 headers: {

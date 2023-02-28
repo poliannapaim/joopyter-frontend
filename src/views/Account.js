@@ -160,7 +160,7 @@ export default function Account() {
             return
         }
         const reqUser = async () => {
-            const res = await fetch('http://127.0.0.1:8000/api/v2/user', {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/user`, {
                 headers: {
                     Accept: 'application/json',
                     Authorization: `Bearer ${token}`
@@ -194,7 +194,7 @@ export default function Account() {
             const profilePic = JSON.stringify({
                 'base64_profile_pic': base64_profile_pic
             })
-            const url = 'http://127.0.0.1:8000/api/v2/account/update-profile-pic'
+            const url = `${process.env.REACT_APP_API_URL}/account/update-profile-pic`
             const options = {
                 method: 'PUT',
                 headers: {
@@ -229,7 +229,7 @@ export default function Account() {
             const [day, month, year] =  newDob.split('/')
             dobFormated = `${year}-${month}-${day}`
         }
-        const url = 'http://127.0.0.1:8000/api/v2/account/update'
+        const url = `${process.env.REACT_APP_API_URL}/account/update`
         const data = JSON.stringify({
             name: newName ? newName : user.name,
             email: newEmail ? newEmail : user.email,
@@ -270,9 +270,9 @@ export default function Account() {
                     <FormProfilePic>
                         <ProfilePic
                             src={newProfilePic ?
-                                `http://127.0.0.1:8000/storage/${newProfilePic}` :
+                                `${process.env.REACT_APP_STORAGE_URL}/${newProfilePic}` :
                                 (user.profile_pic ?
-                                `http://127.0.0.1:8000/storage/${user.profile_pic}` : profile
+                                    `${process.env.REACT_APP_STORAGE_URL}/${user.profile_pic}` : profile
                                 )}/>
                         <InputFile type='file' name='profilePic' id='file' title='Editar foto de perfil.' accept='.jpeg, .png, .jpg' onChange={(e) => HandleProfilePic(e)}/>
                     </FormProfilePic>

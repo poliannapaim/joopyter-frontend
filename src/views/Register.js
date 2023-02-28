@@ -109,7 +109,7 @@ function Register() {
     const handleRegister = (e) => {
         e.preventDefault()
 
-        const url = 'http://127.0.0.1:8000/api/v2/register'
+        const url = `${process.env.REACT_APP_API_URL}/register`
         const data = JSON.stringify({
             name,
             email,

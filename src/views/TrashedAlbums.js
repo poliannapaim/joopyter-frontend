@@ -91,7 +91,7 @@ export default function TrashedAlbums() {
                 return
             }
             try {
-                const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/trashed`, {
+                const res = await fetch(`${process.env.REACT_APP_API_URL}/albums/trashed`, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
@@ -133,7 +133,7 @@ export default function TrashedAlbums() {
 
         const restoreAlbum = async () => {
             try {
-                const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${id}/restore`, {
+                const res = await fetch(`${process.env.REACT_APP_API_URL}/albums/${id}/restore`, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
@@ -159,7 +159,7 @@ export default function TrashedAlbums() {
         if (window.confirm('Você realmente deseja remover permanentemente o álbum?') === true) {
             const removeAlbum = async () => {
                 try {
-                    const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${id}/delete-permanently`, {
+                    const res = await fetch(`${process.env.REACT_APP_API_URL}/albums/${id}/delete-permanently`, {
                         method: 'DELETE',
                         headers: {
                             Accept: 'application/json',

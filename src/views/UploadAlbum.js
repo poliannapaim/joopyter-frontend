@@ -151,7 +151,7 @@ export default function UploadAlbum() {
         const [day, month, year] =  releaseDate.split('/')
         const releaseDateFormated = `${year}-${month}-${day}`
         
-        const url = `http://127.0.0.1:8000/api/v2/albums`
+        const url = `${process.env.REACT_APP_API_URL}/albums`
         const data = JSON.stringify({
             title,
             release_date: releaseDateFormated,

@@ -152,7 +152,7 @@ export default function Album() {
             }
             setError(null)
             try {
-                const res = await fetch(`http://127.0.0.1:8000/api/v2/albums/${id}`, {
+                const res = await fetch(`${process.env.REACT_APP_API_URL}/albums/${id}`, {
                     headers: {
                         Accept: 'application/json',
                         Authorization: `Bearer ${token}`
@@ -226,7 +226,7 @@ export default function Album() {
     const handleAlbumDelete = (e) => {
         e.preventDefault()
         if (window.confirm('Você realmente deseja deletar o álbum?') === true) {
-            const url = `http://127.0.0.1:8000/api/v2/albums/${album.id}`
+            const url = `${process.env.REACT_APP_API_URL}/albums/${album.id}`
             const options = {
                 method: 'DELETE',
                 headers: {
@@ -254,14 +254,14 @@ export default function Album() {
 
     const addTracks =  tracks.length ? <StyledLink to={`/album/${album.id}/upload-tracks`}>+ adicionar músicas</StyledLink> : <></>
 
-    const getShapeBottom = tracks.lenght > 7 ? <ShapeBottomAbsolute/> : <ShapeBottom/>
+    const getShapeBottom = tracks.length > 7 ? <ShapeBottom/> : <ShapeBottomAbsolute/>
 
     return (
         <Main>
             <NavBar/>
 
             <Container>
-                <CoverPic src={`http://127.0.0.1:8000/storage/${album.cover_pic}`}/>
+                <CoverPic src={`${process.env.REACT_APP_STORAGE_URL}/${album.cover_pic}`}/>
 
                 <Data>
                     <Info>
