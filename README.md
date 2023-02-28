@@ -1,70 +1,28 @@
-# Getting Started with Create React App
+---
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![logo](https://user-images.githubusercontent.com/20237654/221716961-cd43f5c6-ee0a-4ea8-975b-46966a1cdcc9.svg)
 
-## Available Scripts
+um espaço para artistas independentes registrarem álbuns e músicas.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## passos para desenvolver a aplicação
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- [x] design do protótipo utilizando o Figma
+- [x] desenvolvimento do backend utilizando o framework **Laravel/PHP** (RESTful API, banco de dados com MySQL)
+- [x] testagem das APIs utilizando o programa **Insomnia**
+- [x] desenvolvimento da interface para consumir as APIs utilizando a biblioteca **React/JavaScript** (apenas desktop)
+- [ ] criação de uma máquina virtual (VM) na AWS para deploy da aplicação
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## telas desenvolvidas com React
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![entrar com conta](https://user-images.githubusercontent.com/20237654/221720046-8e15e68f-c4da-4687-80b5-b9fe78449607.png)
+![register](https://user-images.githubusercontent.com/20237654/221721220-8c3648ac-e3e8-4c77-acae-911a90b8493c.png)
+![dashboard](https://user-images.githubusercontent.com/20237654/221721230-f427a24f-a43a-4a30-b1fc-dbb74fda16f1.png)
+![account](https://user-images.githubusercontent.com/20237654/221721237-29b34138-eb47-457f-a688-c5771025cd44.png)
+![album](https://user-images.githubusercontent.com/20237654/221721244-bd9da56d-7635-4a9d-8c63-00d93d3005bb.png)
+![tracks](https://user-images.githubusercontent.com/20237654/221721256-a02a8190-b8ae-4586-86f4-cb1bccaa4e4b.png)
+![album view](https://user-images.githubusercontent.com/20237654/221721260-ae6b14d0-4402-4b58-ba0c-1e2519c85e79.png)
+![trashed](https://user-images.githubusercontent.com/20237654/221721266-f0094fd5-f1d5-4dd9-8430-14042c9987a9.png)
