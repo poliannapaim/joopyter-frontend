@@ -227,7 +227,7 @@ export default function GetAlbums() {
 
     const listAlbums = albums.length ? albums.map(al => 
         <AlbumInfo key={al.album.id} to={`/album/${al.album.id}`}>
-            <CoverPic src={`http://127.0.0.1:8000/storage/${al.album.cover_pic}`}/>
+            <CoverPic src={`${process.env.REACT_APP_STORAGE_URL}/${al.album.cover_pic}`}/>
             <Title>{al.album.title}</Title>
             <ReleaseDate>{formatReleaseDate(al.album.release_date)}</ReleaseDate>
         </AlbumInfo>
