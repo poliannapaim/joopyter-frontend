@@ -255,7 +255,7 @@ export default function UpdateTracks() {
             <Button type='submit'>salvar</Button>
         </FormTracksUpdate>
     : (
-        <Message>Você ainda não possui músicas neste álbum. <StyledLink to='/upload-tracks'>Adicione!</StyledLink></Message>
+        <Message>Você ainda não possui músicas neste álbum. <StyledLink to={`/album/${albumId}/upload-tracks`}>Adicione!</StyledLink></Message>
     )
     
     const getShapeBottom = tracks.lenght > 4 ? <ShapeBottomAbsolute/> : <ShapeBottom/>
