@@ -162,7 +162,7 @@ export default function GetAlbums() {
             setIsFetching(true)
             setError(null)
             try {
-                const res = await fetch('http://127.0.0.1:8000/api/v2/albums', {
+                const res = await fetch(`${process.env.REACT_APP_API_URL}/albums`, {
                     headers: {
                         Accept: 'application/json',
                         Authorization: `Bearer ${token}`
